@@ -9,6 +9,7 @@ import { useEventListener } from 'usehooks-ts'
 import { updateList } from '@/actions/update-list'
 import { FormInput } from '@/components/form/form-input'
 import { useAction } from '@/hooks/use-action'
+import { cn } from '@/lib/utils'
 
 import { ListOptions } from './list-options'
 
@@ -65,11 +66,6 @@ export const ListHeader = ({
     const { id } = data
     const { boardId } = data
 
-    if (title === newTitle) {
-      disableEditing()
-      return
-    }
-
     execute({
       id,
       title: newTitle,
@@ -84,7 +80,12 @@ export const ListHeader = ({
   useEventListener('keydown', onKeyDown)
 
   return (
-    <div className="pt-2 px-2 text-sm font-semibold flex justify-between items-start gap-x-2">
+    <div
+      className={cn(
+        'pt-2 px-2 text-sm font-semibold flex justify-between items-start gap-x-2',
+        fieldErrors ? 'mb-2' : 'mb-0'
+      )}
+    >
       {isEditing ? (
         <form ref={formRef} className="flex-1 px-[2px]" action={onUpdateList}>
           <FormInput
