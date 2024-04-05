@@ -58,18 +58,15 @@ export const ListItem = ({ data, index }: ListItemProps) => {
               onAddCard={enableEditing}
               data={data}
             />
-            <Droppable droppableId={data.id} type="card" direction="vertical">
+            <Droppable droppableId={data.id} type="card">
               {(provided) => (
                 <ol
-                  {...provided.droppableProps}
                   ref={provided.innerRef}
-                  className={cn(
-                    'mx-1 px-1 py-0.5 flex flex-col gap-y-2',
-                    data.cards.length > 0 ? 'mt-2' : 'mt-0'
-                  )}
+                  {...provided.droppableProps}
+                  className="mx-1 px-1 py-0.5 flex flex-col gap-y-2"
                 >
                   {data.cards.map((card, index) => (
-                    <CardItem key={card.id} index={index} data={card} />
+                    <CardItem index={index} key={card.id} data={card} />
                   ))}
                   {provided.placeholder}
                 </ol>

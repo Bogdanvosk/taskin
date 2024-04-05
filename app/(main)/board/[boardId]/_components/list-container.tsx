@@ -154,16 +154,16 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="list" type="list" direction="horizontal">
+      <Droppable droppableId="lists" type="list" direction="horizontal">
         {(provided) => (
           <ol
             {...provided.droppableProps}
             ref={provided.innerRef}
             className="flex gap-x-3 h-full transition"
           >
-            {orderedData.map((list, index) => (
-              <ListItem key={list.id} index={index} data={list} />
-            ))}
+            {orderedData.map((list, index) => {
+              return <ListItem key={list.id} index={index} data={list} />
+            })}
             {provided.placeholder}
             <ListForm />
             <div className="flex-shrink-0 w-1" />
