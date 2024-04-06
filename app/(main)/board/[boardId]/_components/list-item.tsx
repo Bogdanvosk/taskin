@@ -37,7 +37,6 @@ export const ListItem = ({ data, index }: ListItemProps) => {
       isDragDisabled={isListHeaderEditing || isEditing}
       draggableId={data.id}
       index={index}
-      disableInteractiveElementBlocking
     >
       {(provided) => (
         <li

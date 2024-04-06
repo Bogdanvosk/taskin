@@ -25,8 +25,8 @@ export const BoardList = () => {
       </div>
       {data ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data.map((board: Board, index: number) => (
-            <BoardItem key={board.id} index={index} data={board} />
+          {data.map((board: Board) => (
+            <BoardItem key={board.id} data={board} />
           ))}
           <FormPopover side="right" sideOffset={10}>
             <div

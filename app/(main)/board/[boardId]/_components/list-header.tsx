@@ -66,6 +66,11 @@ export const ListHeader = ({
     const { id } = data
     const { boardId } = data
 
+    if (title === newTitle) {
+      disableEditing()
+      return
+    }
+
     execute({
       id,
       title: newTitle,

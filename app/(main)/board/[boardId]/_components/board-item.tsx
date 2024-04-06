@@ -5,7 +5,6 @@ import Link from 'next/link'
 
 interface BoardItemProps {
   data: Board
-  index: number
 }
 
 export const BoardItem = ({ data }: BoardItemProps) => {
