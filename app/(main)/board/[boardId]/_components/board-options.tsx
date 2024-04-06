@@ -3,6 +3,7 @@
 import { MoreHorizontal, X } from 'lucide-react'
 import { toast } from 'sonner'
 
+import { copyBoard } from '@/actions/copy-board'
 import { deleteBoard } from '@/actions/delete-board'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,15 +19,26 @@ interface BoardOptionsProps {
 }
 
 export const BoardOptions = ({ id }: BoardOptionsProps) => {
-  const { execute, isLoading } = useAction(deleteBoard, {
+  const { execute: executeDeleteBoard, isLoading } = useAction(deleteBoard, {
     onError: () => {
       toast.error('Failed to delete board')
     }
   })
 
+  const { execute: executeCopyBoard } = useAction(copyBoard, {
+    onError: () => {
+      toast.error('Failed to copy board')
+    }
+  })
+
   const onDeleteBoard = () => {
-    execute({ id })
+    executeDeleteBoard({ id })
   }
+
+  const onCopyBoard = () => {
+    executeCopyBoard({ id })
+  }
+
   return (
     <div>
       <Popover>
@@ -47,6 +59,14 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
               <X className="h-4 w-4" />
             </Button>
           </PopoverClose>
+          <Button
+            disabled={isLoading}
+            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+            variant="ghost"
+            onClick={onCopyBoard}
+          >
+            Copy board
+          </Button>
           <Button
             disabled={isLoading}
             className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"

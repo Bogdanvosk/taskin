@@ -3,35 +3,24 @@ import { NextResponse } from 'next/server'
 
 import { db } from '@/lib/db'
 
-export async function GET(
-  req: Request,
-  { params }: { params: { cardId: string } }
-) {
+export const GET = async () => {
   const { userId } = auth()
 
   if (!userId) {
     return new Response(JSON.stringify('Unauthorized'), { status: 401 })
   }
+
   try {
-    const card = await db.card.findUnique({
+    const boards = await db.board.findMany({
       where: {
-        id: params.cardId,
-        list: {
-          board: {
-            userId
-          }
-        }
+        userId
       },
-      include: {
-        list: {
-          select: {
-            title: true
-          }
-        }
+      orderBy: {
+        createdAt: 'desc'
       }
     })
 
-    return NextResponse.json(card)
+    return NextResponse.json(boards)
   } catch (error) {
     return new Response(JSON.stringify(error), { status: 500 })
   }

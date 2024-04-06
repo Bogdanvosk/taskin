@@ -1,15 +1,16 @@
 import { Suspense } from 'react'
 
 import { BoardList } from './_components/board-list'
+import { SkeletonBoardList } from './_components/board-list/skeleton'
 
-const DashboardPage = () => {
+const MainPage = () => {
   return (
     <div className="w-full mb-20 px-4 mt-16">
-      <Suspense fallback={<BoardList.Skeleton />}>
+      <Suspense fallback={<SkeletonBoardList />}>
         <BoardList />
       </Suspense>
     </div>
   )
 }
 
-export default DashboardPage
+export default MainPage
