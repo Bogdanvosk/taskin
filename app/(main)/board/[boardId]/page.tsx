@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 
 import { db } from '@/lib/db'
 
-import ListContainer from './_components/list-container'
+import ListContainer from './_components/list/list-container'
 
 interface BoardIdPageProps {
   params: {
@@ -38,7 +38,7 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
   })
 
   return (
-    <div className="p-4 h-full overflow-x-auto">
+    <div className="relative p-4 h-full overflow-x-auto scrollbar">
       <ListContainer boardId={params.boardId} data={lists} />
     </div>
   )

@@ -71,13 +71,9 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
             key={image.id}
             className={cn(
               'cursor-pointer relative aspect-video group hover:opacity-75 transition bg-muted',
-              pending && 'opacity-50 hover:opacity-50 cursor-auto'
+              pending ? 'opacity-50 hover:opacity-50 cursor-auto' : ''
             )}
-            onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-              if ((e.target as HTMLElement).nodeName === 'A') return
-
-              handleSelectImage(image.id)
-            }}
+            onClick={() => handleSelectImage(image.id)}
           >
             <input
               type="radio"
@@ -85,7 +81,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
               id={id}
               className="hidden"
               checked={selectedImageId === image.id}
-              onChange={() => {}}
+              readOnly
               disabled={pending}
               value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
             />
@@ -98,12 +94,15 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
             <div
               className={cn(
                 'opacity-0 transition absolute inset-y-0 w-full h-full bg-black/30 flex items-center justify-center',
-                selectedImageId === image.id && 'opacity-100'
+                selectedImageId === image.id ? 'opacity-100' : ''
               )}
             >
               <Check className="h-4 w-4 text-white" />
             </div>
             <Link
+              onClick={(e: React.MouseEvent<HTMLAnchorElement>) =>
+                e.stopPropagation()
+              }
               href={image.links.html}
               target="_blank"
               className="opacity-0 transition group-hover:opacity-100 absolute bottom-0 w-full text-[10px] truncate text-white hover:underline p-1 bg-black/50"

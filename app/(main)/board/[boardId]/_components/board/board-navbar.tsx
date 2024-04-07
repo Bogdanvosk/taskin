@@ -6,9 +6,10 @@ import { toast } from 'sonner'
 import { changeFavourite } from '@/actions/change-favourite'
 import { useAction } from '@/hooks/use-action'
 
+import { FavouriteButton } from '../favourite-button'
+
 import { BoardOptions } from './board-options'
 import { BoardTitleForm } from './board-title-form'
-import { FavouriteButton } from './favourite-button'
 
 interface BoardNavbarProps {
   data: Board
