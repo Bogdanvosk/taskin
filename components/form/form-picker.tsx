@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { Check, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { defaultImages } from '@/constants/images'
+import { defaultImages } from '@/constants/unsplash-images'
 import { unsplash } from '@/lib/unsplash'
 import { cn } from '@/lib/utils'
 
@@ -58,7 +58,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
   if (isLoading) {
     return (
       <div className="p-6 flex items-center justify-center">
-        <Loader2 className="h-4 w-4 text-sky-700 animate-spin" />
+        <Loader2 className="h-4 w-4 text-[#6C63FF] animate-spin" />
       </div>
     )
   }
@@ -73,7 +73,11 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
               'cursor-pointer relative aspect-video group hover:opacity-75 transition bg-muted',
               pending && 'opacity-50 hover:opacity-50 cursor-auto'
             )}
-            onClick={() => handleSelectImage(image.id)}
+            onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+              if ((e.target as HTMLElement).nodeName === 'A') return
+
+              handleSelectImage(image.id)
+            }}
           >
             <input
               type="radio"
@@ -89,7 +93,6 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
               src={image.urls.thumb}
               alt="Unsplash image"
               className="object-cover rounded-sm"
-              // sizes='90px 50px'
               fill
             />
             <div

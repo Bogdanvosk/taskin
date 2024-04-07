@@ -4,14 +4,17 @@ import { useState } from 'react'
 import type { Board } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { Heart, User2 } from 'lucide-react'
+import Image from 'next/image'
 
 import { FormPopover } from '@/components/form/form-popover'
 import { Button } from '@/components/ui/button'
+import { favouriteImage } from '@/constants/images'
 import { fetcher } from '@/lib/fetcher'
 import { cn } from '@/lib/utils'
 
 import { BoardItem } from '../../board/[boardId]/_components/board-item'
 
+import { ErrorBlock } from './error-block'
 import { SkeletonBoardList } from './skeleton'
 
 export const BoardList = () => {
@@ -74,7 +77,7 @@ export const BoardList = () => {
       </div>
 
       {/* TODO: Add error component */}
-      {isBoardsError || isFavouritesError ? <p>Failed to load boards</p> : null}
+      {isBoardsError || isFavouritesError ? <ErrorBlock /> : null}
 
       {isBoardsLoading ? <SkeletonBoardList /> : null}
 
@@ -97,6 +100,16 @@ export const BoardList = () => {
           </FormPopover>
         </div>
       )}
+      <Image
+        className={cn(
+          'absolute right-[5px] bottom-[5px] transition duration-500 -z-[1]',
+          isShowingFavourites ? 'translate-x-0' : 'translate-x-[210px]'
+        )}
+        src={favouriteImage}
+        alt="Favourite"
+        width={200}
+        height={200}
+      />
     </div>
   )
 }

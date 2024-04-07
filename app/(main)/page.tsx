@@ -5,7 +5,7 @@ import { SkeletonBoardList } from './_components/board-list/skeleton'
 
 const MainPage = () => {
   return (
-    <div className="w-full mb-20 px-4 mt-16">
+    <div className="w-full mb-20 px-4 pt-16">
       <Suspense fallback={<SkeletonBoardList />}>
         <BoardList />
       </Suspense>
