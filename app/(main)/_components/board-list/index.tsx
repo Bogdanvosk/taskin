@@ -1,33 +1,92 @@
 'use client'
 
+import { useState } from 'react'
 import type { Board } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
-import { User2 } from 'lucide-react'
+import { Heart, User2 } from 'lucide-react'
 
 import { FormPopover } from '@/components/form/form-popover'
+import { Button } from '@/components/ui/button'
 import { fetcher } from '@/lib/fetcher'
+import { cn } from '@/lib/utils'
 
 import { BoardItem } from '../../board/[boardId]/_components/board-item'
 
 import { SkeletonBoardList } from './skeleton'
 
 export const BoardList = () => {
-  const { data } = useQuery<Board[]>({
+  const [isShowingFavourites, setIsShowingFavourites] = useState(false)
+
+  const {
+    data: boards,
+    isError: isBoardsError,
+    isLoading: isBoardsLoading
+  } = useQuery<Board[]>({
     queryKey: ['boards'],
     queryFn: () => fetcher(`/api/boards`)
   })
 
+  const {
+    data: favourites,
+    refetch,
+    isError: isFavouritesError
+  } = useQuery<Board[]>({
+    queryKey: ['favourites'],
+    queryFn: () => fetcher(`/api/favourites`),
+    enabled: false
+  })
+
+  const onFilterFavourites = () => {
+    refetch()
+    setIsShowingFavourites(!isShowingFavourites)
+  }
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center font-semibold text-lg text-neutral-700">
-        <User2 className="h-6 w-6 mr-2" />
-        Your boards
+      <div className="flex items-center justify-between font-semibold text-neutral-700">
+        <div className="flex items-center">
+          <User2 className="h-6 w-6 mr-2" />
+          <span className="text-[16px] xs:text-lg">Your boards</span>
+        </div>
+        <Button
+          variant="ghost"
+          onClick={onFilterFavourites}
+          className={cn(
+            'flex gap-2 px-2',
+            isShowingFavourites ? 'bg-slate-200' : ''
+          )}
+        >
+          <span
+            className={cn(
+              'text-[16px] xs:text-lg text-black transition',
+              isShowingFavourites ? 'font-bold' : ''
+            )}
+          >
+            Favourite boards
+          </span>
+          <Heart
+            className={cn(
+              'fill-transparent stroke-red-400 transition cursor-pointer',
+              isShowingFavourites ? 'fill-red-500 stroke-red-500' : ''
+            )}
+          />
+        </Button>
       </div>
-      {data ? (
+
+      {/* TODO: Add error component */}
+      {isBoardsError || isFavouritesError ? <p>Failed to load boards</p> : null}
+
+      {isBoardsLoading ? <SkeletonBoardList /> : null}
+
+      {boards && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data.map((board: Board) => (
-            <BoardItem key={board.id} data={board} />
-          ))}
+          {favourites && isShowingFavourites
+            ? favourites.map((board: Board) => (
+                <BoardItem key={board.id} data={board} />
+              ))
+            : boards.map((board: Board) => (
+                <BoardItem key={board.id} data={board} />
+              ))}
           <FormPopover side="right" sideOffset={10}>
             <div
               role="button"
@@ -37,8 +96,6 @@ export const BoardList = () => {
             </div>
           </FormPopover>
         </div>
-      ) : (
-        <SkeletonBoardList />
       )}
     </div>
   )

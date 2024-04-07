@@ -44,7 +44,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         imageThumbUrl,
         imageFullUrl,
         imageLinkHtml,
-        imageUserName
+        imageUserName,
+        isFavourite: false
       }
     })
   } catch (error) {

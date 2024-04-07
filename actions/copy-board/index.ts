@@ -51,6 +51,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         imageFullUrl: boardToCopy.imageFullUrl,
         imageUserName: boardToCopy.imageUserName,
         imageLinkHtml: boardToCopy.imageLinkHtml,
+        isFavourite: boardToCopy.isFavourite,
         lists: {
           create: boardToCopy.lists.map((list: ListWithCards) => ({
             title: list.title,

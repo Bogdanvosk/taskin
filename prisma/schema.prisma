@@ -18,7 +18,7 @@ model Board {
   imageLinkHtml String @db.String
 
   // TODO: add isFavourite field
-  // isFavourite   Boolean
+  isFavourite   Boolean
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
