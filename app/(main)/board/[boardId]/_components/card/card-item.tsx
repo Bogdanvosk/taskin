@@ -3,7 +3,6 @@
 import { Draggable } from '@hello-pangea/dnd'
 import type { Card } from '@prisma/client'
 
-import { CardModal } from '@/components/modals/card-modal'
 import { useCardModal } from '@/hooks/use-card-modal'
 
 interface CardItemProps {
@@ -12,11 +11,10 @@ interface CardItemProps {
 }
 
 export const CardItem = ({ data, index }: CardItemProps) => {
-  const { isOpen, onOpen } = useCardModal()
+  const { onOpen } = useCardModal()
 
   return (
     <>
-      {isOpen && <CardModal />}
       <Draggable draggableId={data.id} index={index}>
         {(provided) => (
           <div

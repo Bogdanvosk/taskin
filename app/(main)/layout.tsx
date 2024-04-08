@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import { Toaster } from 'sonner'
 
+import { CardModal } from '@/components/modals/card-modal'
 import { QueryProvider } from '@/components/providers/query-provider'
 import { catImage } from '@/constants/images'
 
@@ -31,6 +32,7 @@ const BoardLayout = ({ children }: { children: React.ReactNode }) => {
         height={256}
       />
       <QueryProvider>
+        <CardModal />
         <Toaster />
         <Navbar />
         {children}
