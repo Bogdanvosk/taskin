@@ -4,7 +4,6 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import { Toaster } from 'sonner'
 
-import { ModalProvider } from '@/components/providers/modal-provider'
 import { QueryProvider } from '@/components/providers/query-provider'
 import { catImage } from '@/constants/images'
 
@@ -33,7 +32,6 @@ const BoardLayout = ({ children }: { children: React.ReactNode }) => {
       />
       <QueryProvider>
         <Toaster />
-        <ModalProvider />
         <Navbar />
         {children}
       </QueryProvider>
