@@ -2,6 +2,7 @@
 
 import type { ElementRef } from 'react'
 import { useRef } from 'react'
+import { useIntl } from 'react-intl'
 import type { List } from '@prisma/client'
 import { MoreHorizontal, X } from 'lucide-react'
 import { toast } from 'sonner'
@@ -25,6 +26,7 @@ interface ListOptionsProps {
 }
 
 export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
+  const intl = useIntl()
   const closeButtonRef = useRef<ElementRef<'button'>>(null)
 
   const { execute: executeDelete } = useAction(deleteList, {
@@ -76,7 +78,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
       </PopoverTrigger>
       <PopoverContent className="px-0 py-3" side="bottom">
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
-          List actions
+          {intl.formatMessage({ id: 'lists_list_actions' })}
         </div>
         <PopoverClose ref={closeButtonRef} asChild>
           <Button
@@ -91,7 +93,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
           variant="ghost"
         >
-          Add card
+          {intl.formatMessage({ id: 'cards_add_card' })}
         </Button>
         <form action={onCopyList}>
           <input readOnly hidden name="id" id="id" value={data.id} />
@@ -106,7 +108,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
             variant="ghost"
             className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
           >
-            Copy list
+            {intl.formatMessage({ id: 'lists_copy_list' })}
           </FormSubmit>
         </form>
         <Separator />
@@ -123,7 +125,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
             variant="ghost"
             className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
           >
-            Delete list
+            {intl.formatMessage({ id: 'lists_delete_list' })}
           </FormSubmit>
         </form>
       </PopoverContent>

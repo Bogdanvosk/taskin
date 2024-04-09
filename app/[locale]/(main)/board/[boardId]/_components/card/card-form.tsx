@@ -2,6 +2,7 @@
 
 import type { ElementRef, KeyboardEventHandler } from 'react'
 import { forwardRef, useRef } from 'react'
+import { useIntl } from 'react-intl'
 import { Plus, X } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { toast } from 'sonner'
@@ -22,6 +23,7 @@ interface CardFormProps {
 
 export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
   ({ listId, isEditing, enableEditing, disableEditing }, ref) => {
+    const intl = useIntl()
     const params = useParams()
 
     const formRef = useRef<ElementRef<'form'>>(null)
@@ -29,6 +31,7 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
     const { execute, fieldErrors } = useAction(createCard, {
       onSuccess: (data) => {
         toast.success(`Card "${data.title}" created`)
+
         formRef.current?.reset()
         disableEditing()
       },
@@ -78,12 +81,14 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
             id="title"
             ref={ref}
             onKeyDown={onTextareaKeyDown}
-            placeholder="Enter card title"
+            placeholder={intl.formatMessage({ id: 'cards_enter_card_title' })}
             errors={fieldErrors}
           />
           <input readOnly hidden id="listId" value={listId} name="listId" />
           <div className="flex items-center gap-x-1">
-            <FormSubmit>Add card</FormSubmit>
+            <FormSubmit>
+              {intl.formatMessage({ id: 'cards_add_card' })}
+            </FormSubmit>
             <Button onClick={disableEditing} size="sm" variant="ghost">
               <X className="h-5 w-5" />
             </Button>
@@ -100,7 +105,7 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
           className="h-auto px-2 py-1.5 w-full justify-start text-muted-foreground text-sm"
         >
           <Plus className="h-4 w-4 mr-2" />
-          Add a card
+          {intl.formatMessage({ id: 'cards_add_card' })}
         </Button>
       </div>
     )

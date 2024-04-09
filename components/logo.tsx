@@ -1,6 +1,7 @@
 import localFont from 'next/font/local'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 import { logoImage } from '@/constants/images'
 import { cn } from '@/lib/utils'
@@ -10,8 +11,10 @@ const headingFont = localFont({
 })
 
 export const Logo = () => {
+  const params = useParams()
+
   return (
-    <Link href="/">
+    <Link href={`/${params.locale}`}>
       <div className="hover:opacity-75 transition items-center gap-x-2 hidden md:flex">
         <Image
           priority={true}

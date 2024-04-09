@@ -1,19 +1,26 @@
 import { auth } from '@clerk/nextjs'
 import { notFound } from 'next/navigation'
 
+import ServerIntlProvider from '@/components/providers/server-intl-provider'
 import { db } from '@/lib/db'
+import getIntl from '@/lib/intl'
 
 import { BoardNavbar } from './_components/board/board-navbar'
 
-export async function generateMetadata({
-  params
-}: {
-  params: { boardId: string }
-}) {
+interface BoardIdLayoutProps {
+  children: React.ReactNode
+  params: { boardId: string; locale: string }
+}
+
+type MetaDataProps = Pick<BoardIdLayoutProps, 'params'>
+
+export async function generateMetadata({ params }: MetaDataProps) {
+  const intl = await getIntl(params.locale, 'board_page')
+
   const { userId } = auth()
   if (!userId) {
     return {
-      title: 'Board'
+      title: intl.formatMessage({ id: 'meta_board' })
     }
   }
 
@@ -25,18 +32,11 @@ export async function generateMetadata({
   })
 
   return {
-    title: board?.title || 'Board'
+    title: board?.title || intl.formatMessage({ id: 'meta_board' })
   }
 }
 
-const BoardIdLayout = async ({
-  children,
-  params
-}: {
-  children: React.ReactNode
-  params: { boardId: string }
-}) => {
-
+const BoardIdLayout = async ({ children, params }: BoardIdLayoutProps) => {
   const { userId } = auth()
   const board = await db.board.findUnique({
     where: {
@@ -49,15 +49,19 @@ const BoardIdLayout = async ({
     notFound()
   }
 
+  const intl = await getIntl(params.locale, 'board_page')
+
   return (
-    <div
-      className="relative h-full bg-no-repeat bg-cover bg-center"
-      style={{ backgroundImage: `url(${board.imageFullUrl})` }}
-    >
-      <BoardNavbar data={board} />
-      <div className="absolute inset-0 bg-black/10" />
-      <main className="relative pt-28 h-full">{children}</main>
-    </div>
+    <ServerIntlProvider messages={intl.messages} locale={params.locale}>
+      <div
+        className="relative h-full bg-no-repeat bg-cover bg-center"
+        style={{ backgroundImage: `url(${board.imageFullUrl})` }}
+      >
+        <BoardNavbar data={board} />
+        <div className="absolute inset-0 bg-black/10" />
+        <main className="relative pt-28 h-full">{children}</main>
+      </div>
+    </ServerIntlProvider>
   )
 }
 
