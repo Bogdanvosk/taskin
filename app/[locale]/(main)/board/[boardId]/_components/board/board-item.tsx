@@ -3,15 +3,17 @@
 import type { Board } from '@prisma/client'
 import { Heart } from 'lucide-react'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 interface BoardItemProps {
   data: Board
 }
 
 export const BoardItem = ({ data }: BoardItemProps) => {
+  const params = useParams()
   return (
     <Link
-      href={`/board/${data.id}`}
+      href={`${params.locale}/board/${data.id}`}
       style={{
         backgroundImage: `url(${data.imageThumbUrl})`
       }}
