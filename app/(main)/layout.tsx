@@ -9,9 +9,12 @@ import { QueryProvider } from '@/components/providers/query-provider'
 import { catImage } from '@/constants/images'
 
 import { Navbar } from './_components/navbar'
+import { useCardModal } from '@/hooks/use-card-modal'
 
 const BoardLayout = ({ children }: { children: React.ReactNode }) => {
   const catImageRef = useRef<HTMLImageElement>(null)
+
+  const { isOpen } = useCardModal((state) => state)
 
   const onLoadImageAnimation = () => {
     setTimeout(() => {
@@ -32,7 +35,7 @@ const BoardLayout = ({ children }: { children: React.ReactNode }) => {
         height={256}
       />
       <QueryProvider>
-        <CardModal />
+        {isOpen ? <CardModal /> : null}
         <Toaster />
         <Navbar />
         {children}
