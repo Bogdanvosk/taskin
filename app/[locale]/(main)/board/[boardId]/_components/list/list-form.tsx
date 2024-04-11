@@ -2,7 +2,6 @@
 
 import type { ElementRef } from 'react'
 import { useRef, useState } from 'react'
-import { useIntl } from 'react-intl'
 import { Plus, X } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -17,7 +16,6 @@ import { useAction } from '@/hooks/use-action'
 import { ListWrapper } from './list-wrapper'
 
 export const ListForm = () => {
-  const intl = useIntl()
   const [isEditing, setIsEditing] = useState(false)
 
   const formRef = useRef<ElementRef<'form'>>(null)
@@ -81,12 +79,10 @@ export const ListForm = () => {
             ref={inputRef}
             id="title"
             className="text-sm px-2 py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition"
-            placeholder={intl.formatMessage({ id: 'lists_enter_list_title' })}
+            placeholder="Enter list title"
           />
           <div className="flex items-center justify-between gap-x-1">
-            <FormSubmit>
-              {intl.formatMessage({ id: 'lists_add_list' })}
-            </FormSubmit>
+            <FormSubmit>Add list</FormSubmit>
             <Button onClick={disableEditing} size={'sm'} variant={'ghost'}>
               <X className="h-5 w-5" />
             </Button>
@@ -104,7 +100,7 @@ export const ListForm = () => {
         className="w-full rounded-md bg-white/80 hover:bg-white/50 transition p-3 flex items-center font-medium text-sm"
       >
         <Plus className="h-4 w-4 mr-2" />
-        {intl.formatMessage({ id: 'lists_add_list' })}
+        Add list
       </button>
     </ListWrapper>
   )

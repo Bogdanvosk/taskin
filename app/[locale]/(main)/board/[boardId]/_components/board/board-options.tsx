@@ -1,6 +1,5 @@
 'use client'
 
-import { useIntl } from 'react-intl'
 import { MoreHorizontal, X } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -20,7 +19,6 @@ interface BoardOptionsProps {
 }
 
 export const BoardOptions = ({ id }: BoardOptionsProps) => {
-  const intl = useIntl()
   const { execute: executeDeleteBoard, isLoading } = useAction(deleteBoard, {
     onError: () => {
       toast.error('Failed to delete board')
@@ -51,7 +49,7 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
         </PopoverTrigger>
         <PopoverContent className="px-0 py-3" side="bottom" align="start">
           <div className="text-sm font-medium text-center text-neutral-600 pb-4">
-            {intl.formatMessage({ id: 'navbar_board_actions' })}
+            Board actions
           </div>
           <PopoverClose asChild>
             <Button
@@ -67,7 +65,7 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
             variant="ghost"
             onClick={onCopyBoard}
           >
-            {intl.formatMessage({ id: 'navbar_copy_board' })}
+            Copy board
           </Button>
           <Button
             disabled={isLoading}
@@ -75,7 +73,7 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
             variant="ghost"
             onClick={onDeleteBoard}
           >
-            {intl.formatMessage({ id: 'navbar_delete_board' })}
+            Delete this board
           </Button>
         </PopoverContent>
       </Popover>

@@ -2,7 +2,6 @@
 
 import type { ElementRef } from 'react'
 import { useRef, useState } from 'react'
-import { useIntl } from 'react-intl'
 import type { List } from '@prisma/client'
 import { toast } from 'sonner'
 import { useEventListener } from 'usehooks-ts'
@@ -25,7 +24,6 @@ export const ListHeader = ({
   onAddCard,
   onChangeIsEditing
 }: ListHeaderProps) => {
-  const intl = useIntl()
   const [title, setTitle] = useState(data.title)
   const [isEditing, setIsEditing] = useState(false)
 
@@ -101,7 +99,7 @@ export const ListHeader = ({
             ref={inputRef}
             defaultValue={title}
             onBlur={onInputBlur}
-            placeholder={intl.formatMessage({ id: 'lists_enter_list_title' })}
+            placeholder="Enter list title"
             errors={fieldErrors}
           />
         </form>
