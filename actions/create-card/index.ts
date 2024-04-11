@@ -18,13 +18,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     }
   }
 
-  const { title, boardId, listId } = data
-
-  // let cardTitle = title
-
-  // if (title === '') {
-  //   cardTitle = 'New card'
-  // }
+  const { title, boardId, listId, description } = data
 
   if (!title) {
     return {
@@ -67,6 +61,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       data: {
         title,
         listId,
+        description,
         order: newOrder
       }
     })

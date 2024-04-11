@@ -35,7 +35,7 @@ export const Description = ({ data }: DescriptionProps) => {
         queryKey: ['card', data.id]
       })
 
-      toast.success(`Card ${data.title} updated"`)
+      toast.success(`Card ${data.title} updated`)
     },
     onError: (error) => {
       toast.error(error)
@@ -62,7 +62,7 @@ export const Description = ({ data }: DescriptionProps) => {
   const onTextareaKeydown = (
     e: React.KeyboardEvent<ElementRef<'textarea'>>
   ) => {
-    if (e.key === 'Enter' && e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       formRef.current?.requestSubmit()
       disableEditing()
     }

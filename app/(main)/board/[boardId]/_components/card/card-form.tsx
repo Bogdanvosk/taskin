@@ -12,6 +12,7 @@ import { FormSubmit } from '@/components/form/form-submit'
 import { FormTextarea } from '@/components/form/form-textarea'
 import { Button } from '@/components/ui/button'
 import { useAction } from '@/hooks/use-action'
+import { FormInput } from '@/components/form/form-input'
 
 interface CardFormProps {
   listId: string
@@ -20,7 +21,7 @@ interface CardFormProps {
   enableEditing: () => void
 }
 
-export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
+export const CardForm = forwardRef<HTMLInputElement, CardFormProps>(
   ({ listId, isEditing, enableEditing, disableEditing }, ref) => {
     const params = useParams()
 
@@ -43,12 +44,12 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
       }
     }
 
-    const onTextareaKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (
-      e
+    const onTextareaKeydown = (
+      e: React.KeyboardEvent<ElementRef<'textarea'>>
     ) => {
       if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault()
         formRef.current?.requestSubmit()
+        disableEditing()
       }
     }
 
@@ -57,12 +58,14 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
 
     const onCreateCard = (formData: FormData) => {
       const title = formData.get('title') as string
+      const description = formData.get('description') as string
       const listId = formData.get('listId') as string
       const boardId = params.boardId as string
 
       execute({
         title,
         listId,
+        description,
         boardId
       })
     }
@@ -74,14 +77,21 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(
           action={onCreateCard}
           className="m-1 py-0.5 space-y-4"
         >
-          <FormTextarea
-            id="title"
-            ref={ref}
-            onKeyDown={onTextareaKeyDown}
-            placeholder="Enter card title"
-            errors={fieldErrors}
-          />
-          <input readOnly hidden id="listId" value={listId} name="listId" />
+          <div className="space-y-2 border-2 border-border-primary p-1 rounded-md shadow-md">
+            <FormInput
+              id="title"
+              ref={ref}
+              placeholder="Enter card title"
+              errors={fieldErrors}
+            />
+            <FormTextarea
+              id="description"
+              onKeyDown={onTextareaKeydown}
+              placeholder="Enter card description"
+              errors={fieldErrors}
+            />
+            <input readOnly hidden id="listId" value={listId} name="listId" />
+          </div>
           <div className="flex items-center gap-x-1">
             <FormSubmit>Add card</FormSubmit>
             <Button onClick={disableEditing} size="sm" variant="ghost">

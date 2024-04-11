@@ -6,5 +6,6 @@ export const createCardSchema = z.object({
     invalid_type_error: 'Title is required'
   }),
   listId: z.string(),
-  boardId: z.string()
+  boardId: z.string(),
+  description: z.optional(z.string())
 })

@@ -17,7 +17,7 @@ interface ListItemProps {
 }
 
 export const ListItem = ({ data, index }: ListItemProps) => {
-  const textareaRef = useRef<ElementRef<'textarea'>>(null)
+  const inputRef = useRef<ElementRef<'input'>>(null)
 
   const [isEditing, setIsEditing] = useState(false)
   const [isListHeaderEditing, setIsListHeaderEditing] = useState(false)
@@ -29,7 +29,7 @@ export const ListItem = ({ data, index }: ListItemProps) => {
   const enableEditing = () => {
     setIsEditing(true)
     setTimeout(() => {
-      textareaRef.current?.focus()
+      inputRef.current?.focus()
     })
   }
 
@@ -73,7 +73,7 @@ export const ListItem = ({ data, index }: ListItemProps) => {
             </Droppable>
             <CardForm
               listId={data.id}
-              ref={textareaRef}
+              ref={inputRef}
               isEditing={isEditing}
               disableEditing={disableEditing}
               enableEditing={enableEditing}
