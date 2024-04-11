@@ -1,12 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { useIntl } from 'react-intl'
 import type { Board } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { Heart, User2 } from 'lucide-react'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
 
 import { FormPopover } from '@/components/form/form-popover'
 import { Button } from '@/components/ui/button'
@@ -21,9 +19,6 @@ import { SkeletonBoardList } from './skeleton'
 
 export const BoardList = () => {
   const [isShowingFavourites, setIsShowingFavourites] = useState(false)
-  const { locale } = useParams()
-
-  const intl = useIntl()
 
   const {
     data: boards,
@@ -31,7 +26,7 @@ export const BoardList = () => {
     isLoading: isBoardsLoading
   } = useQuery<Board[]>({
     queryKey: ['boards'],
-    queryFn: () => fetcher(`${locale}/api/boards`)
+    queryFn: () => fetcher(`/api/boards`)
   })
 
   const {
@@ -40,7 +35,7 @@ export const BoardList = () => {
     isError: isFavouritesError
   } = useQuery<Board[]>({
     queryKey: ['favourites'],
-    queryFn: () => fetcher(`${locale}/api/favourites`),
+    queryFn: () => fetcher(`/api/favourites`),
     enabled: false
   })
 
@@ -54,9 +49,7 @@ export const BoardList = () => {
       <div className="flex items-center justify-between font-semibold text-neutral-700">
         <div className="flex items-center">
           <User2 className="h-6 w-6 mr-2" />
-          <span className="text-[16px] xs:text-lg">
-            {intl.formatMessage({ id: 'home_your_boards' })}
-          </span>
+          <span className="text-[16px] xs:text-lg">Your boards</span>
         </div>
         <Button
           variant="ghost"
@@ -72,7 +65,7 @@ export const BoardList = () => {
               isShowingFavourites ? 'font-bold' : ''
             )}
           >
-            {intl.formatMessage({ id: 'home_favourite_boards' })}
+            Favourite boards
           </span>
           <Heart
             className={cn(
@@ -101,9 +94,7 @@ export const BoardList = () => {
               role="button"
               className="hidden sm:flex aspect-video relative h-full w-full bg-muted rounded-sm flex-col gap-y-1 items-center justify-center hover:opacity-75 transition shadow-sm"
             >
-              <p className="font-semibold">
-                {intl.formatMessage({ id: 'home_create_new_board_button' })}
-              </p>
+              <p className="font-semibold">Create a new board</p>
             </div>
           </FormPopover>
         </div>

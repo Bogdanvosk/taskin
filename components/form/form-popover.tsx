@@ -2,7 +2,6 @@
 
 import type { ElementRef } from 'react'
 import { useRef } from 'react'
-import { useIntl } from 'react-intl'
 import { X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -35,7 +34,6 @@ export const FormPopover = ({
   side = 'bottom',
   sideOffset = 0
 }: FormPopoverProps) => {
-  const intl = useIntl()
   const router = useRouter()
   const closeButtonRef = useRef<ElementRef<'button'>>(null)
 
@@ -67,7 +65,7 @@ export const FormPopover = ({
         sideOffset={sideOffset}
       >
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
-          {intl.formatMessage({ id: 'popover_create_board' })}
+          Create board
         </div>
         <PopoverClose ref={closeButtonRef} asChild>
           <Button
@@ -82,14 +80,12 @@ export const FormPopover = ({
             <FormPicker id="image" errors={fieldErrors} />
             <FormInput
               id="title"
-              label={intl.formatMessage({ id: 'popover_board_title' })}
+              label="Board title"
               type="text"
               errors={fieldErrors}
             />
           </div>
-          <FormSubmit className="w-full">
-            {intl.formatMessage({ id: 'create_button' })}
-          </FormSubmit>
+          <FormSubmit className="w-full">Create</FormSubmit>
         </form>
       </PopoverContent>
     </Popover>

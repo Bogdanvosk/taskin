@@ -36,7 +36,6 @@ const BoardIdLayout = async ({
   children: React.ReactNode
   params: { boardId: string }
 }) => {
-
   const { userId } = auth()
   const board = await db.board.findUnique({
     where: {
