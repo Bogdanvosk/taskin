@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils'
 
 import { BoardItem } from '../../board/[boardId]/_components/board/board-item'
 
-import { ErrorBlock } from './error-block'
+import { Error } from './error'
 import { SkeletonBoardList } from './skeleton'
 
 export const BoardList = () => {
@@ -48,20 +48,22 @@ export const BoardList = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between font-semibold text-neutral-700">
         <div className="flex items-center">
-          <User2 className="h-6 w-6 mr-2" />
-          <span className="text-[16px] xs:text-lg">Your boards</span>
+          <User2 className="h-6 w-6 mr-2 dark:stroke-white" />
+          <span className="text-[16px] xs:text-lg dark:text-white">
+            Your boards
+          </span>
         </div>
         <Button
           variant="ghost"
           onClick={onFilterFavourites}
           className={cn(
             'flex gap-2 px-2',
-            isShowingFavourites ? 'bg-slate-200' : ''
+            isShowingFavourites ? 'bg-slate-200 dark:bg-black/50' : ''
           )}
         >
           <span
             className={cn(
-              'text-[16px] xs:text-lg text-black transition',
+              'text-[16px] xs:text-lg text-black transition dark:text-white',
               isShowingFavourites ? 'font-bold' : ''
             )}
           >
@@ -75,8 +77,7 @@ export const BoardList = () => {
           />
         </Button>
       </div>
-
-      {isBoardsError || isFavouritesError ? <ErrorBlock /> : null}
+      {isBoardsError || isFavouritesError ? <Error /> : null}
 
       {isBoardsLoading ? <SkeletonBoardList /> : null}
 
@@ -92,7 +93,7 @@ export const BoardList = () => {
           <FormPopover side="right" sideOffset={10}>
             <div
               role="button"
-              className="hidden sm:flex aspect-video relative h-full w-full bg-muted rounded-sm flex-col gap-y-1 items-center justify-center hover:opacity-75 transition shadow-sm"
+              className="hidden sm:flex aspect-video relative h-full w-full bg-muted rounded-sm flex-col gap-y-1 items-center justify-center hover:opacity-75 transition shadow-sm dark:bg-slate-800"
             >
               <p className="font-semibold">Create a new board</p>
             </div>

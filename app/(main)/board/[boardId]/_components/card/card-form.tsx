@@ -1,6 +1,6 @@
 'use client'
 
-import type { ElementRef, KeyboardEventHandler } from 'react'
+import type { ElementRef } from 'react'
 import { forwardRef, useRef } from 'react'
 import { Plus, X } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -8,11 +8,11 @@ import { toast } from 'sonner'
 import { useEventListener, useOnClickOutside } from 'usehooks-ts'
 
 import { createCard } from '@/actions/create-card'
+import { FormInput } from '@/components/form/form-input'
 import { FormSubmit } from '@/components/form/form-submit'
 import { FormTextarea } from '@/components/form/form-textarea'
 import { Button } from '@/components/ui/button'
 import { useAction } from '@/hooks/use-action'
-import { FormInput } from '@/components/form/form-input'
 
 interface CardFormProps {
   listId: string

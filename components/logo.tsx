@@ -20,7 +20,12 @@ export const Logo = () => {
           width={32}
           height={32}
         />
-        <p className={cn('text-lg text-neutral-700', headingFont.className)}>
+        <p
+          className={cn(
+            'text-lg text-neutral-700 dark:text-white',
+            headingFont.className
+          )}
+        >
           Taskin
         </p>
       </div>

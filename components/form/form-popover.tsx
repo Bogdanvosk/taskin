@@ -59,12 +59,12 @@ export const FormPopover = ({
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
-        className="w-80 pt-3"
+        className="w-80 pt-3 dark:bg-slate-800"
         align={align}
         side={side}
         sideOffset={sideOffset}
       >
-        <div className="text-sm font-medium text-center text-neutral-600 pb-4">
+        <div className="text-sm font-medium text-center text-neutral-600 pb-4 dark:text-white">
           Create board
         </div>
         <PopoverClose ref={closeButtonRef} asChild>
@@ -85,7 +85,7 @@ export const FormPopover = ({
               errors={fieldErrors}
             />
           </div>
-          <FormSubmit className="w-full">Create</FormSubmit>
+          <FormSubmit className="w-full dark:text-white">Create</FormSubmit>
         </form>
       </PopoverContent>
     </Popover>

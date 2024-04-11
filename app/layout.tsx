@@ -2,7 +2,10 @@ import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
+import { ThemeProvider } from 'next-themes'
+
 import { siteConfig } from '@/config/site'
+import { cn } from '@/lib/utils'
 
 import './globals.css'
 
@@ -28,9 +31,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <ClerkProvider>
-        <body className={inter.className}>{children}</body>
+        <body className={cn(inter.className)}>
+          <ThemeProvider attribute="class">{children}</ThemeProvider>
+        </body>
       </ClerkProvider>
     </html>
   )
