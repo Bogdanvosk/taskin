@@ -47,7 +47,7 @@ export const ListItem = ({ data, index }: ListItemProps) => {
         >
           <div
             {...provided.dragHandleProps}
-            className="w-full rounded-md bg-[#f1f2f4] shadow-md pb-2"
+            className="w-full rounded-md bg-[#f1f2f4] shadow-md pb-2 dark:bg-slate-600"
           >
             {/* TODO: add divided function callback */}
             <ListHeader

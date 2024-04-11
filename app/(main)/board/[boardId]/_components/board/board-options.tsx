@@ -43,25 +43,28 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
     <div>
       <Popover>
         <PopoverTrigger asChild>
-          <Button className="h-auto w-auto p-2" variant="transparent">
+          <Button
+            className="h-auto w-auto p-2 dark:hover:bg-slate-500/40"
+            variant="transparent"
+          >
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="px-0 py-3" side="bottom" align="start">
-          <div className="text-sm font-medium text-center text-neutral-600 pb-4">
+          <div className="text-sm font-medium text-center text-neutral-600 dark:text-white pb-4">
             Board actions
           </div>
           <PopoverClose asChild>
             <Button
               variant="ghost"
-              className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600"
+              className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600 "
             >
               <X className="h-4 w-4" />
             </Button>
           </PopoverClose>
           <Button
             disabled={isLoading}
-            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm "
             variant="ghost"
             onClick={onCopyBoard}
           >
@@ -69,7 +72,7 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
           </Button>
           <Button
             disabled={isLoading}
-            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm "
             variant="ghost"
             onClick={onDeleteBoard}
           >

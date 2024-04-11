@@ -83,15 +83,17 @@ export const Description = ({ data }: DescriptionProps) => {
 
   return (
     <div className="flex items-start gap-x-3 w-full">
-      <AlignLeft className="h-5 w-5 mt-0.5 text-neutral-700" />
+      <AlignLeft className="h-5 w-5 mt-0.5 text-neutral-700 dark:text-white" />
       <div className="w-full">
-        <p className="font-semibold text-neutral-700 mb-2">Description</p>
+        <p className="font-semibold text-neutral-700 mb-2 dark:text-white">
+          Description
+        </p>
         {isEditing ? (
           <form action={onSubmit} ref={formRef} className="space-y-2">
             <FormTextarea
               onKeyDown={onTextareaKeydown}
               id="description"
-              className="w-full"
+              className="w-full dark:bg-slate-700 dark:border-transparent"
               placeholder="Add description"
               defaultValue={data.description || undefined}
               ref={textareaRef}
@@ -113,7 +115,7 @@ export const Description = ({ data }: DescriptionProps) => {
           <div
             onClick={enableEditing}
             role="button"
-            className="min-h-[78px] bg-neutral-200 rounded-md text-sm font-medium py-3 px-3.5 hover:bg-neutral-300 transition"
+            className="min-h-[78px] bg-neutral-200 dark:bg-slate-500/80 rounded-md text-sm font-medium py-3 px-3.5 hover:bg-neutral-300 transition"
           >
             {data.description || 'Add description...'}
           </div>

@@ -77,7 +77,7 @@ export const CardForm = forwardRef<HTMLInputElement, CardFormProps>(
           action={onCreateCard}
           className="m-1 py-0.5 space-y-4"
         >
-          <div className="space-y-2 border-2 border-border-primary p-1 rounded-md shadow-md">
+          <div className="space-y-2 border-2 border-border-primary dark:border-transparent p-1 rounded-md shadow-md">
             <FormInput
               id="title"
               ref={ref}
@@ -92,7 +92,7 @@ export const CardForm = forwardRef<HTMLInputElement, CardFormProps>(
             />
             <input readOnly hidden id="listId" value={listId} name="listId" />
           </div>
-          <div className="flex items-center gap-x-1">
+          <div className="flex items-center gap-x-1 px-1">
             <FormSubmit>Add card</FormSubmit>
             <Button onClick={disableEditing} size="sm" variant="ghost">
               <X className="h-5 w-5" />
@@ -107,7 +107,7 @@ export const CardForm = forwardRef<HTMLInputElement, CardFormProps>(
         <Button
           variant="ghost"
           onClick={enableEditing}
-          className="h-auto px-2 py-1.5 w-full justify-start text-muted-foreground text-sm"
+          className="h-auto px-2 py-1.5 w-full justify-start text-muted-foreground text-sm "
         >
           <Plus className="h-4 w-4 mr-2" />
           Add a card

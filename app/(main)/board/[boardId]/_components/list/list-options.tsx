@@ -75,7 +75,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="px-0 py-3" side="bottom">
-        <div className="text-sm font-medium text-center text-neutral-600 pb-4">
+        <div className="text-sm font-medium text-center text-neutral-600 pb-4 dark:text-white">
           List actions
         </div>
         <PopoverClose ref={closeButtonRef} asChild>
@@ -88,7 +88,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
         </PopoverClose>
         <Button
           onClick={onAddCard}
-          className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+          className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm "
           variant="ghost"
         >
           Add card
@@ -104,7 +104,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           />
           <FormSubmit
             variant="ghost"
-            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm "
           >
             Copy list
           </FormSubmit>
@@ -121,7 +121,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           />
           <FormSubmit
             variant="ghost"
-            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm "
           >
             Delete list
           </FormSubmit>

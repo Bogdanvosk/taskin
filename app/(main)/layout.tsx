@@ -36,7 +36,11 @@ const BoardLayout = ({ children }: { children: React.ReactNode }) => {
       />
       <QueryProvider>
         {isOpen ? <CardModal /> : null}
-        <Toaster />
+        <Toaster
+          toastOptions={{
+            className: 'dark:bg-slate-700 dark:text-white dark:border-white/30'
+          }}
+        />
         <Navbar />
         {children}
       </QueryProvider>

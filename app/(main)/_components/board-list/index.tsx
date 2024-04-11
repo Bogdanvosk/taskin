@@ -58,7 +58,7 @@ export const BoardList = () => {
           onClick={onFilterFavourites}
           className={cn(
             'flex gap-2 px-2',
-            isShowingFavourites ? 'bg-slate-200 dark:bg-black/50' : ''
+            isShowingFavourites ? 'bg-slate-200 dark:bg-slate-800/70' : ''
           )}
         >
           <span

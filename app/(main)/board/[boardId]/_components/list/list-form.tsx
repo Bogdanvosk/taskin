@@ -71,7 +71,7 @@ export const ListForm = () => {
         <form
           action={onCreateList}
           ref={formRef}
-          className="w-full p-3 rounded-md bg-white space-y-4 shadow-md"
+          className="w-full p-3 rounded-md bg-white space-y-4 shadow-md dark:bg-slate-600"
         >
           <FormInput
             errors={fieldErrors}
@@ -82,7 +82,7 @@ export const ListForm = () => {
             placeholder="Enter list title"
           />
           <div className="flex items-center justify-between gap-x-1">
-            <FormSubmit>Add list</FormSubmit>
+            <FormSubmit className="">Add list</FormSubmit>
             <Button onClick={disableEditing} size={'sm'} variant={'ghost'}>
               <X className="h-5 w-5" />
             </Button>
@@ -97,7 +97,7 @@ export const ListForm = () => {
       {/* TODO: replace fixed width */}
       <button
         onClick={enableEditing}
-        className="w-full rounded-md bg-white/80 hover:bg-white/50 transition p-3 flex items-center font-medium text-sm"
+        className="w-full rounded-md bg-white/80 dark:bg-slate-700 dark:hover:bg-slate-600 hover:bg-white/50 transition p-3 flex items-center font-medium text-sm"
       >
         <Plus className="h-4 w-4 mr-2" />
         Add list
