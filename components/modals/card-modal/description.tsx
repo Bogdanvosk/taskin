@@ -93,7 +93,7 @@ export const Description = ({ data }: DescriptionProps) => {
             <FormTextarea
               onKeyDown={onTextareaKeydown}
               id="description"
-              className="w-full dark:bg-slate-700 dark:border-transparent"
+              className="w-full "
               placeholder="Add description"
               defaultValue={data.description || undefined}
               ref={textareaRef}

@@ -95,7 +95,7 @@ export const BoardList = () => {
               role="button"
               className="hidden sm:flex aspect-video relative h-full w-full bg-muted rounded-sm flex-col gap-y-1 items-center justify-center hover:opacity-75 transition shadow-sm dark:bg-slate-800"
             >
-              <p className="font-semibold">Create a new board</p>
+              <p className="font-semibold text-white">Create a new board</p>
             </div>
           </FormPopover>
         </div>
