@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { Board } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
+import { useSpring, animated } from '@react-spring/web'
 import { Heart, User2 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -44,14 +45,19 @@ export const BoardList = () => {
     setIsShowingFavourites(!isShowingFavourites)
   }
 
+  const animate = useSpring({
+    from: { opacity: 0, y: -20 },
+    to: { opacity: 1, y: 0 }
+  })
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between font-semibold text-neutral-700">
         <div className="flex items-center">
           <User2 className="h-6 w-6 mr-2 dark:stroke-white" />
-          <span className="text-[16px] xs:text-lg dark:text-white">
+          <div className="relative text-[16px] xs:text-lg dark:text-white">
             Your boards
-          </span>
+          </div>
         </div>
         <Button
           variant="ghost"
@@ -61,14 +67,19 @@ export const BoardList = () => {
             isShowingFavourites ? 'bg-slate-200 dark:bg-slate-800/70' : ''
           )}
         >
-          <span
+          <div
             className={cn(
-              'text-[16px] xs:text-lg text-black transition dark:text-white',
-              isShowingFavourites ? 'font-bold' : ''
+              'relative text-[16px] xs:text-lg text-black transition dark:text-white'
             )}
           >
             Favourite boards
-          </span>
+            <span
+              className={cn(
+                'absolute w-full opacity-0 h-[2px] bg-black dark:bg-white left-0 bottom-0 transition',
+                isShowingFavourites && 'opacity-100'
+              )}
+            />
+          </div>
           <Heart
             className={cn(
               'fill-transparent stroke-red-400 transition cursor-pointer',
@@ -82,7 +93,10 @@ export const BoardList = () => {
       {isBoardsLoading ? <SkeletonBoardList /> : null}
 
       {boards && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <animated.div
+          style={animate}
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
+        >
           {favourites && isShowingFavourites
             ? favourites.map((board: Board) => (
                 <BoardItem key={board.id} data={board} />
@@ -98,7 +112,7 @@ export const BoardList = () => {
               <p className="font-semibold text-white">Create a new board</p>
             </div>
           </FormPopover>
-        </div>
+        </animated.div>
       )}
       <Image
         className={cn(

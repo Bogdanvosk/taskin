@@ -94,7 +94,6 @@ export const ListForm = () => {
 
   return (
     <ListWrapper>
-      {/* TODO: replace fixed width */}
       <button
         onClick={enableEditing}
         className="w-full rounded-md bg-white/80 dark:bg-slate-700 dark:hover:bg-slate-600 hover:bg-white/50 transition p-3 flex items-center font-medium text-sm"
