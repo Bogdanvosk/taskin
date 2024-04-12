@@ -1,8 +1,8 @@
-import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 
+import { AuthThemeProvider } from '@/components/providers/auth-theme-provider'
 import { siteConfig } from '@/config/site'
 import { cn } from '@/lib/utils'
 
@@ -31,11 +31,11 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
-      <ClerkProvider>
+      <AuthThemeProvider>
         <body className={cn(inter.className)}>
           <ThemeProvider attribute="class">{children}</ThemeProvider>
         </body>
-      </ClerkProvider>
+      </AuthThemeProvider>
     </html>
   )
 }
