@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import type { Board } from '@prisma/client'
+import { animated, useSpring } from '@react-spring/web'
 import { useQuery } from '@tanstack/react-query'
-import { useSpring, animated } from '@react-spring/web'
 import { Heart, User2 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -107,9 +107,11 @@ export const BoardList = () => {
           <FormPopover side="right" sideOffset={10}>
             <div
               role="button"
-              className="hidden sm:flex aspect-video relative h-full w-full bg-muted rounded-sm flex-col gap-y-1 items-center justify-center hover:opacity-75 transition shadow-sm dark:bg-slate-800"
+              className="hidden sm:flex aspect-video relative h-full w-full bg-muted rounded-sm flex-col gap-y-1 items-center justify-center hover:bg-muted/75 transition shadow-sm dark:bg-slate-800 dark:hover:bg-slate-800/75"
             >
-              <p className="font-semibold text-white">Create a new board</p>
+              <p className="font-semibold dark:text-white">
+                Create a new board
+              </p>
             </div>
           </FormPopover>
         </animated.div>

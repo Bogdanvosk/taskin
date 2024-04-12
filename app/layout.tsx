@@ -31,11 +31,13 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
-      <AuthThemeProvider>
-        <body className={cn(inter.className)}>
-          <ThemeProvider attribute="class">{children}</ThemeProvider>
-        </body>
-      </AuthThemeProvider>
+      <body className={cn(inter.className)}>
+        <AuthThemeProvider>
+          <ThemeProvider attribute="class" enableSystem={true}>
+            {children}
+          </ThemeProvider>
+        </AuthThemeProvider>
+      </body>
     </html>
   )
 }
