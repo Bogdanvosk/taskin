@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import type { Board } from '@prisma/client'
-import { animated, useSpring } from '@react-spring/web'
 import { useQuery } from '@tanstack/react-query'
+import { motion } from 'framer-motion'
 import { Heart, User2 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -45,10 +45,10 @@ export const BoardList = () => {
     setIsShowingFavourites(!isShowingFavourites)
   }
 
-  const animate = useSpring({
-    from: { opacity: 0, y: -20 },
-    to: { opacity: 1, y: 0 }
-  })
+  // const animate = useSpring({
+  //   from: { opacity: 0, y: -20 },
+  //   to: { opacity: 1, y: 0 }
+  // })
 
   return (
     <div className="space-y-4">
@@ -93,8 +93,9 @@ export const BoardList = () => {
       {isBoardsLoading ? <SkeletonBoardList /> : null}
 
       {boards && (
-        <animated.div
-          style={animate}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
         >
           {favourites && isShowingFavourites
@@ -114,7 +115,7 @@ export const BoardList = () => {
               </p>
             </div>
           </FormPopover>
-        </animated.div>
+        </motion.div>
       )}
       <Image
         className={cn(
