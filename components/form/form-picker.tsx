@@ -70,7 +70,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
           <div
             key={image.id}
             className={cn(
-            'cursor-pointer relative aspect-video group hover:opacity-75 transition bg-[#6C63FF] rounded-sm',
+              'cursor-pointer relative aspect-video group hover:opacity-75 transition bg-[#6C63FF] rounded-sm',
               pending ? 'opacity-50 hover:opacity-50 cursor-auto' : ''
             )}
             onClick={() => handleSelectImage(image.id)}

@@ -80,7 +80,7 @@ export const Navbar = () => {
       <div className="ml-auto flex items-center gap-x-5">
         <button
           onClick={onChangeTheme}
-          className="dark:bg-slate-800 bg-slate-400 p-1 flex items-center gap-x-4 rounded-3xl"
+          className="dark:bg-slate-800 bg-slate-400 dark:hover:bg-slate-500 hover:bg-slate-600 transition p-1 flex items-center gap-x-4 rounded-3xl"
         >
           {theme && (
             <Moon
