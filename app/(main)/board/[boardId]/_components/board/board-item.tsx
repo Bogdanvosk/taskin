@@ -15,7 +15,7 @@ export const BoardItem = ({ data }: BoardItemProps) => {
       style={{
         backgroundImage: `url(${data.imageThumbUrl})`
       }}
-      className="group relative aspect-video bg-no-repeat bg-center bg-cover bg-sky-700 rounded-sm h-full w-full p-2 overflow-hidden"
+      className="group relative aspect-video bg-no-repeat bg-center bg-cover bg-[#6C63FF] dark:bg-slate-500 rounded-sm h-full w-full p-2 overflow-hidden"
     >
       {data.isFavourite && (
         <Heart className="absolute right-2 top-2 z-10 fill-red-500 stroke-red-500" />
