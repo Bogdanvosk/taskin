@@ -4,10 +4,14 @@ import { auth } from '@clerk/nextjs'
 import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
-import { db } from '@/lib/db'
+// import { db } from '@/lib/db'
+
+import { db } from '@/lib/firebaseConfig'
 
 import { createBoardSchema } from './schema'
 import type { InputType, ReturnType } from './types'
+
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth()
@@ -33,21 +37,21 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       error: 'Missing fields. Failed to create board'
     }
   }
-
   let board
   try {
-    board = await db.board.create({
-      data: {
-        title,
-        userId,
-        imageId,
-        imageThumbUrl,
-        imageFullUrl,
-        imageLinkHtml,
-        imageUserName,
-        isFavourite: false
-      }
+    board = await addDoc(collection(db, 'boards'), {
+      title,
+      userId,
+      imageId,
+      imageThumbUrl,
+      imageFullUrl,
+      imageLinkHtml,
+      imageUserName,
+      isFavourite: false
     })
+
+    // console.log('Document written with ID: ', board)
+
   } catch (error) {
     return {
       error: 'Failed to create board'
@@ -57,7 +61,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   revalidatePath(`/board/${board.id}`)
 
   return {
-    data: board
+    data: board.id
   }
 }
 

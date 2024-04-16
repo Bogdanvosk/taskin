@@ -1,7 +1,10 @@
 import { auth } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 
-import { db } from '@/lib/db'
+// import { db } from '@/lib/db'
+
+import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore'
+import { db } from '@/lib/firebaseConfig'
 
 export const GET = async () => {
   const { userId } = auth()
@@ -11,12 +14,11 @@ export const GET = async () => {
   }
 
   try {
-    const boards = await db.board.findMany({
-      where: {
-        userId
-      },
-      orderBy: {
-        createdAt: 'desc'
+    const data = await getDocs(collection(db, 'boards'))
+    const boards = data.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data()
       }
     })
 
