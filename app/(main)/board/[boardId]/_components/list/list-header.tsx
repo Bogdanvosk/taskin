@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils'
 import { ListOptions } from './list-options'
 
 interface ListHeaderProps {
-  data: List
+  data: any
   onAddCard: () => void
   onChangeIsEditing: (isListHeaderEditing: boolean) => void
 }

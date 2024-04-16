@@ -1,9 +1,11 @@
 import { auth } from '@clerk/nextjs'
 import { notFound } from 'next/navigation'
 
-import { db } from '@/lib/db'
+// import { db } from '@/lib/db'
 
 import { BoardNavbar } from './_components/board/board-navbar'
+import { collection, getDoc, getDocs, query, where } from 'firebase/firestore'
+import { db } from '@/lib/firebaseConfig'
 
 export async function generateMetadata({
   params
@@ -17,12 +19,12 @@ export async function generateMetadata({
     }
   }
 
-  const board = await db.board.findUnique({
-    where: {
-      id: params.boardId,
-      userId
-    }
-  })
+  const boardsRef = collection(db, 'boards')
+  const q = query(boardsRef, where('userId', '==', userId))
+
+  const data = await getDocs(q)
+
+  const board = data.docs.filter((doc) => doc.id === params.boardId)[0].data()
 
   return {
     title: board?.title || 'Board'
@@ -37,12 +39,20 @@ const BoardIdLayout = async ({
   params: { boardId: string }
 }) => {
   const { userId } = auth()
-  const board = await db.board.findUnique({
-    where: {
-      id: params.boardId,
-      userId
-    }
-  })
+
+  // const board = await db.board.findUnique({
+  //   where: {
+  //     id: params.boardId,
+  //     userId
+  //   }
+  // })
+
+  const boardsRef = collection(db, 'boards')
+  const q = query(boardsRef, where('userId', '==', userId))
+
+  const data = await getDocs(q)
+
+  const board = data.docs.filter((doc) => doc.id === params.boardId)[0].data()
 
   if (!board) {
     notFound()

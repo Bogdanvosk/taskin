@@ -29,7 +29,7 @@ export const CardForm = forwardRef<HTMLInputElement, CardFormProps>(
 
     const { execute, fieldErrors } = useAction(createCard, {
       onSuccess: (data) => {
-        toast.success(`Card "${data.title}" created`)
+        toast.success(`Card created`)
         formRef.current?.reset()
         disableEditing()
       },
@@ -59,7 +59,6 @@ export const CardForm = forwardRef<HTMLInputElement, CardFormProps>(
     const onCreateCard = (formData: FormData) => {
       const title = formData.get('title') as string
       const description = formData.get('description') as string
-      const listId = formData.get('listId') as string
       const boardId = params.boardId as string
 
       execute({
@@ -90,7 +89,6 @@ export const CardForm = forwardRef<HTMLInputElement, CardFormProps>(
               placeholder="Enter card description"
               errors={fieldErrors}
             />
-            <input readOnly hidden id="listId" value={listId} name="listId" />
           </div>
           <div className="flex items-center gap-x-1 px-1">
             <FormSubmit>Add card</FormSubmit>

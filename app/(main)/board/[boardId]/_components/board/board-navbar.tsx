@@ -12,10 +12,12 @@ import { BoardOptions } from './board-options'
 import { BoardTitleForm } from './board-title-form'
 
 interface BoardNavbarProps {
-  data: Board
+  data: any
 }
 
 export const BoardNavbar = ({ data }: BoardNavbarProps) => {
+  // console.log('data', data);
+  
   const { execute } = useAction(changeFavourite, {
     onSuccess: (data) => {
       toast.success(

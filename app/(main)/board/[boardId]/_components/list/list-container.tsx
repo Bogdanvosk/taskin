@@ -15,11 +15,13 @@ import { ListItem } from './list-item'
 
 interface ListContainerProps {
   boardId: string
-  data: ListWithCards[]
+  lists: any
 }
 
-const ListContainer = ({ data, boardId }: ListContainerProps) => {
-  const [orderedData, setOrderedData] = useState(data)
+const ListContainer = ({ lists, boardId }: ListContainerProps) => {
+  console.log('lists', lists);
+  
+  const [orderedData, setOrderedData] = useState(lists)
 
   const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
     onSuccess: () => {
@@ -38,8 +40,8 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
   })
 
   useEffect(() => {
-    setOrderedData(data)
-  }, [data])
+    setOrderedData(lists)
+  }, [lists])
 
   function reorder<T>(list: T[], startIndex: number, endIndex: number) {
     const result = Array.from(list)
@@ -49,7 +51,7 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
 
     return result
   }
-
+  /*
   const onDragEnd = (result: any) => {
     const { destination, source, type } = result
 
@@ -151,7 +153,9 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
       }
     }
   }
+*/
 
+  const onDragEnd = (result: any) => {}
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="lists" type="list" direction="horizontal">
@@ -161,7 +165,7 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
             ref={provided.innerRef}
             className="flex gap-x-3 h-full transition"
           >
-            {orderedData.map((list, index) => {
+            {orderedData.map((list: any, index: number) => {
               return <ListItem key={list.id} index={index} data={list} />
             })}
             {provided.placeholder}

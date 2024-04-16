@@ -6,7 +6,7 @@ import type { Card } from '@prisma/client'
 import { useCardModal } from '@/hooks/use-card-modal'
 
 interface CardItemProps {
-  data: Card
+  data: any
   index: number
 }
 

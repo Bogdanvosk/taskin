@@ -15,6 +15,7 @@ export const GET = async () => {
 
   try {
     const data = await getDocs(collection(db, 'boards'))
+    
     const boards = data.docs.map((doc) => {
       return {
         id: doc.id,

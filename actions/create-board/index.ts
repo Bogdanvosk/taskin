@@ -51,7 +51,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     })
 
     // console.log('Document written with ID: ', board)
-
   } catch (error) {
     return {
       error: 'Failed to create board'

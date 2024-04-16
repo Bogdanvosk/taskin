@@ -4,10 +4,12 @@ import { auth } from '@clerk/nextjs'
 import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
-import { db } from '@/lib/db'
+// import { db } from '@/lib/db'
 
 import { createCardSchema } from './schema'
 import type { InputType, ReturnType } from './types'
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
+import { db } from '@/lib/firebaseConfig'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth()
@@ -28,14 +30,23 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   let card
   try {
-    const list = await db.list.findUnique({
-      where: {
-        id: listId,
-        board: {
-          userId
-        }
-      }
-    })
+    const listsRef = collection(db, 'lists')
+    const listsQ = query(listsRef, where('boardId', '==', boardId))
+
+    const listsData = await getDocs(listsQ)
+
+    listsData.docs.forEach((doc) => console.log(doc.data()))
+
+    const list = listsData.docs.filter((doc) => doc.id === listId)[0].data()
+
+    // const list = await db.list.findUnique({
+    //   where: {
+    //     id: listId,
+    //     board: {
+    //       userId
+    //     }
+    //   }
+    // })
 
     if (!list) {
       return {
@@ -43,29 +54,31 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       }
     }
 
-    const lastCard = await db.card.findFirst({
-      where: {
-        listId
-      },
-      orderBy: {
-        order: 'desc'
-      },
-      select: {
-        order: true
-      }
+    const cardsRef = collection(db, 'cards')
+    const data = await getDocs(cardsRef)
+
+    const lastCard = data.docs.filter((doc) => doc.id === boardId)
+
+    const newOrder = lastCard.length > 0 ? lastCard[0].data().order + 1 : 1
+
+    card = await addDoc(collection(db, 'cards'), {
+      title,
+      listId,
+      description,
+      order: newOrder
     })
 
-    const newOrder = lastCard ? lastCard.order + 1 : 1
-
-    card = await db.card.create({
-      data: {
-        title,
-        listId,
-        description,
-        order: newOrder
-      }
-    })
+    // card = await db.card.create({
+    //   data: {
+    //     title,
+    //     listId,
+    //     description,
+    //     order: newOrder
+    //   }
+    // })
   } catch (err) {
+    // console.log('ERR', err)
+
     return {
       error: `${err}`
     }
@@ -74,7 +87,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   revalidatePath(`/board/${boardId}`)
 
   return {
-    data: card
+    data: card.id
   }
 }
 

@@ -17,6 +17,8 @@ interface ListItemProps {
 }
 
 export const ListItem = ({ data, index }: ListItemProps) => {
+  // console.log('data', data);
+  
   const inputRef = useRef<ElementRef<'input'>>(null)
 
   const [isEditing, setIsEditing] = useState(false)
@@ -64,9 +66,10 @@ export const ListItem = ({ data, index }: ListItemProps) => {
                   {...provided.droppableProps}
                   className="mx-1 px-1 py-0.5 flex flex-col gap-y-2"
                 >
-                  {data.cards.map((card, index) => (
-                    <CardItem index={index} key={card.id} data={card} />
-                  ))}
+                  {data.cards &&
+                    data.cards.map((card, index) => (
+                      <CardItem index={index} key={card.id} data={card} />
+                    ))}
                   {provided.placeholder}
                 </ol>
               )}
