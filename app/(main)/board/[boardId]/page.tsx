@@ -16,8 +16,6 @@ interface BoardIdPageProps {
 const BoardIdPage = async ({ params }: BoardIdPageProps) => {
   const { userId } = auth()
 
-  // const { updateLists } = useStore((state) => state)
-
   if (!userId) {
     redirect('/sign-in')
   }

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 
 interface FavouriteButtonProps {
   isFavourite: boolean
-  onChangeFavourite?: () => void
+  onChangeFavourite: () => void
 }
 
 export const FavouriteButton = ({

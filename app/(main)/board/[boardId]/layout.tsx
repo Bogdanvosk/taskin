@@ -39,13 +39,6 @@ const BoardIdLayout = async ({
 }) => {
   const { userId } = auth()
 
-  // const board = await db.board.findUnique({
-  //   where: {
-  //     id: params.boardId,
-  //     userId
-  //   }
-  // })
-
   const boardsRef = collection(db, 'boards')
   const q = query(boardsRef, where('userId', '==', userId))
 

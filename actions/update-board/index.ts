@@ -1,47 +1,45 @@
-// 'use server'
+'use server'
 
-// import { auth } from '@clerk/nextjs'
-// import { revalidatePath } from 'next/cache'
+import { auth } from '@clerk/nextjs'
+import { revalidatePath } from 'next/cache'
 
-// import { createSafeAction } from '@/lib/create-safe-action'
+import { createSafeAction } from '@/lib/create-safe-action'
 
-// // import { db } from '@/lib/db'
-// import { updateBoardSchema } from './schema'
-// import type { InputType, ReturnType } from './types'
+import { updateBoardSchema } from './schema'
+import type { InputType, ReturnType } from './types'
+import { doc, updateDoc } from 'firebase/firestore'
+import { db } from '@/lib/firebaseConfig'
 
-// const handler = async (data: InputType): Promise<ReturnType> => {
-//   const { userId } = auth()
+const handler = async (data: InputType): Promise<ReturnType> => {
+  const { userId } = auth()
 
-//   if (!userId) {
-//     return {
-//       error: 'Unauthorized'
-//     }
-//   }
+  if (!userId) {
+    return {
+      error: 'Unauthorized'
+    }
+  }
 
-//   const { title, id } = data
+  const { title, id } = data
 
-//   let board
-//   // try {
-//   //   board = await db.board.update({
-//   //     where: {
-//   //       id,
-//   //       userId
-//   //     },
-//   //     data: {
-//   //       title
-//   //     }
-//   //   })
-//   // } catch (error) {
-//   //   return {
-//   //     error: 'Failed to update board'
-//   //   }
-//   // }
+  let board
 
-//   revalidatePath(`/board/${id}`)
+  try {
+    const boardRef = doc(db, 'boards', id)
 
-//   return {
-//     data: board
-//   }
-// }
+    board = await updateDoc(boardRef, {
+      title
+    })
+  } catch (error) {
+    return {
+      error: 'Failed to update board'
+    }
+  }
 
-// export const updateBoard = createSafeAction(updateBoardSchema, handler)
+  revalidatePath(`/board/${id}`)
+
+  return {
+    data: id
+  }
+}
+
+export const updateBoard = createSafeAction(updateBoardSchema, handler)

@@ -2,9 +2,8 @@
 
 import { MoreHorizontal, X } from 'lucide-react'
 
-// import { toast } from 'sonner'
-// import { copyBoard } from '@/actions/copy-board'
-// import { deleteBoard } from '@/actions/delete-board'
+import { toast } from 'sonner'
+import { deleteBoard } from '@/actions/delete-board'
 import { Button } from '@/components/ui/button'
 import {
   Popover,
@@ -12,32 +11,32 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover'
-// import { useAction } from '@/hooks/use-action'
+import { useAction } from '@/hooks/use-action'
+import { useParams } from 'next/navigation'
+import { copyBoard } from '@/actions/copy-board'
 
-interface BoardOptionsProps {
-  id: string
-}
+export const BoardOptions = () => {
+  const { boardId } = useParams()
 
-export const BoardOptions = ({}: BoardOptionsProps) => {
-  // const { execute: executeDeleteBoard, isLoading } = useAction(deleteBoard, {
-  //   onError: () => {
-  //     toast.error('Failed to delete board')
-  //   }
-  // })
+  const { execute: executeDeleteBoard, isLoading } = useAction(deleteBoard, {
+    onError: () => {
+      toast.error('Failed to delete board')
+    }
+  })
 
-  // const { execute: executeCopyBoard } = useAction(copyBoard, {
-  //   onError: () => {
-  //     toast.error('Failed to copy board')
-  //   }
-  // })
+  const { execute: executeCopyBoard } = useAction(copyBoard, {
+    onError: () => {
+      toast.error('Failed to copy board')
+    }
+  })
 
-  // const onDeleteBoard = () => {
-  //   executeDeleteBoard({ id })
-  // }
+  const onDeleteBoard = () => {
+    executeDeleteBoard({ id: boardId as string })
+  }
 
-  // const onCopyBoard = () => {
-  //   executeCopyBoard({ id })
-  // }
+  const onCopyBoard = () => {
+    executeCopyBoard({ id: boardId as string })
+  }
 
   return (
     <div>
@@ -63,18 +62,18 @@ export const BoardOptions = ({}: BoardOptionsProps) => {
             </Button>
           </PopoverClose>
           <Button
-            // disabled={isLoading}
+            disabled={isLoading}
             className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm "
             variant="ghost"
-            // onClick={onCopyBoard}
+            onClick={onCopyBoard}
           >
             Copy board
           </Button>
           <Button
-            // disabled={isLoading}
+            disabled={isLoading}
             className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm "
             variant="ghost"
-            // onClick={onDeleteBoard}
+            onClick={onDeleteBoard}
           >
             Delete this board
           </Button>

@@ -1,30 +1,33 @@
+import { db } from '@/lib/firebaseConfig'
 import { auth } from '@clerk/nextjs'
-// import { NextResponse } from 'next/server'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { NextResponse } from 'next/server'
 
-// import { db } from '@/lib/db'
-
-export const GET = () => {
+export const GET = async () => {
   const { userId } = auth()
 
   if (!userId) {
     return new Response(JSON.stringify('Unauthorized'), { status: 401 })
   }
 
-  // try {
-  //   const favouriteBoards = await db.board.findMany({
-  //     where: {
-  //       userId,
-  //       isFavourite: {
-  //         equals: true
-  //       }
-  //     },
-  //     orderBy: {
-  //       createdAt: 'desc'
-  //     }
-  //   })
+  try {
+    const boardsQ = query(
+      collection(db, 'boards'),
+      where('userId', '==', userId),
+      where('isFavourite', '==', true)
+    )
 
-  //   return NextResponse.json(favouriteBoards)
-  // } catch (error) {
-  //   return new Response(JSON.stringify(error), { status: 500 })
-  // }
+    const data = await getDocs(boardsQ)
+
+    const boards = data.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data()
+      }
+    })
+
+    return NextResponse.json(boards)
+  } catch (error) {
+    return new Response(JSON.stringify(error), { status: 500 })
+  }
 }
