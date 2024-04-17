@@ -6,9 +6,7 @@ export const updateCardOrderSchema = z.object({
       id: z.string(),
       title: z.string(),
       listId: z.string(),
-      order: z.number(),
-      createdAt: z.date(),
-      updatedAt: z.date()
+      order: z.number()
     })
   ),
   boardId: z.string()

@@ -4,7 +4,7 @@ import type { ElementRef } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { Draggable, Droppable } from '@hello-pangea/dnd'
 
-import type { Card, ListWithCards } from '@/types'
+import type { Card, List, ListWithCards } from '@/types'
 
 import { CardForm } from '../card/card-form'
 import { CardItem } from '../card/card-item'
@@ -12,22 +12,19 @@ import { CardItem } from '../card/card-item'
 import { ListHeader } from './list-header'
 
 interface ListItemProps {
-  data: ListWithCards
+  data: any
   index: number
-  cards: Card[][]
+  cards: Card[]
 }
 
 export const ListItem = ({ data, index, cards }: ListItemProps) => {
-  const [filteredCards, setFilteredCards] = useState<Card[] | null>(null)
+  const [filteredCards, setFilteredCards] = useState<Card[]>(cards)
 
   useEffect(() => {
-    const newCards =
-      cards.flat().length > 0 &&
-      cards.filter((cards: Card[]) =>
-        cards.length > 0 ? cards[0].listId === data.id : null
-      )
-
-    if (newCards) setFilteredCards(newCards[0])
+    if (!data.cards) {
+      const sorted = cards.sort((a, b) => a.order - b.order)
+      setFilteredCards(sorted)
+    }
   }, [cards])
 
   const inputRef = useRef<ElementRef<'input'>>(null)
@@ -77,10 +74,13 @@ export const ListItem = ({ data, index, cards }: ListItemProps) => {
                   {...provided.droppableProps}
                   className="mx-1 px-1 py-0.5 flex flex-col gap-y-2"
                 >
-                  {filteredCards &&
-                    filteredCards.map((card, index) => (
-                      <CardItem index={index} key={card.id} data={card} />
-                    ))}
+                  {!data.cards
+                    ? filteredCards.map((card, index) => (
+                        <CardItem index={index} key={card.id} data={card} />
+                      ))
+                    : data.cards.map((card: Card, index: number) => (
+                        <CardItem index={index} key={card.id} data={card} />
+                      ))}
                   {provided.placeholder}
                 </ol>
               )}

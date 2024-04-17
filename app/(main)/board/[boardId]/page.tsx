@@ -27,12 +27,15 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
 
   const data = await getDocs(listsQ)
 
-  const lists = data.docs.map((doc) => {
-    return {
-      id: doc.id,
-      ...doc.data()
-    }
-  })
+  let lists = data.docs
+    .map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data()
+      }
+    })
+    // @ts-ignore
+    .sort((a, b) => a.order - b.order)
 
   const cards = []
   const getCards = async (listId: string) => {
@@ -62,11 +65,7 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
 
   return (
     <div className="relative p-4 h-full overflow-x-auto scrollbar">
-      <ListContainer
-        boardId={params.boardId}
-        lists={lists as List[]}
-        cards={cards}
-      />
+      <ListContainer lists={lists as List[]} cards={cards} />
     </div>
   )
 }
