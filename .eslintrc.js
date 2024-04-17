@@ -15,7 +15,7 @@ module.exports = {
         '@typescript-eslint/no-unsafe-argument': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-enum-comparison': 'off',
-        '@typescript-eslint/no-var-requires': 'off',
+        // '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/naming-convention': 'off',
         'no-underscore-dangle': 'off',
         'no-restricted-syntax': 'off',

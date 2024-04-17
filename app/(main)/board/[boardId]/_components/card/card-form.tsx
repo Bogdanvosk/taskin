@@ -28,7 +28,7 @@ export const CardForm = forwardRef<HTMLInputElement, CardFormProps>(
     const formRef = useRef<ElementRef<'form'>>(null)
 
     const { execute, fieldErrors } = useAction(createCard, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         toast.success(`Card created`)
         formRef.current?.reset()
         disableEditing()

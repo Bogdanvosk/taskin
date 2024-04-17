@@ -1,6 +1,5 @@
 'use client'
 
-import type { Board } from '@prisma/client'
 import { toast } from 'sonner'
 
 import { changeFavourite } from '@/actions/change-favourite'

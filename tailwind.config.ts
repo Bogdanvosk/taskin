@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-const tailwindAnimate = require('tailwindcss-animate')
+// const tailwindAnimate = require('tailwindcss-animate')
+
+import tailwindAnimate from 'tailwindcss-animate'
 
 module.exports = {
   darkMode: ['class'],

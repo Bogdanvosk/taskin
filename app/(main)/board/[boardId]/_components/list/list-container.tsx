@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
-import { debounce } from 'lodash'
-import { toast } from 'sonner'
 
-import { updateCardOrder } from '@/actions/update-card-order'
-import { updateListOrder } from '@/actions/update-list-order'
-import { useAction } from '@/hooks/use-action'
-import type { List} from '@/types'
+// import { debounce } from 'lodash'
+// import { toast } from 'sonner'
+// import { updateCardOrder } from '@/actions/update-card-order'
+// import { updateListOrder } from '@/actions/update-list-order'
+// import { useAction } from '@/hooks/use-action'
+import type { List } from '@/types'
 
 import { ListForm } from './list-form'
 import { ListItem } from './list-item'
@@ -20,37 +20,37 @@ interface ListContainerProps {
   cards: any
 }
 
-const ListContainer = ({ lists, boardId, cards }: ListContainerProps) => {
+const ListContainer = ({ lists, cards }: ListContainerProps) => {
   const [orderedData, setOrderedData] = useState(lists)
 
-  const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
-    onSuccess: () => {
-      toast.success(`Lists reordered`)
-    },
-    onError: (error) => {
-      toast.error(error)
-    }
-  })
+  // const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
+  //   onSuccess: () => {
+  //     toast.success(`Lists reordered`)
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error)
+  //   }
+  // })
 
-  const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
-    onSuccess: debounce(() => toast.success(`Cards reordered`), 250),
-    onError: (error) => {
-      toast.error(error)
-    }
-  })
+  // const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
+  //   onSuccess: debounce(() => toast.success(`Cards reordered`), 250),
+  //   onError: (error) => {
+  //     toast.error(error)
+  //   }
+  // })
 
   useEffect(() => {
     setOrderedData(lists)
   }, [lists])
 
-  function reorder<T>(list: T[], startIndex: number, endIndex: number) {
-    const result = Array.from(list)
+  // function reorder<T>(list: T[], startIndex: number, endIndex: number) {
+  //   const result = Array.from(list)
 
-    const [removed] = result.splice(startIndex, 1)
-    result.splice(endIndex, 0, removed)
+  //   const [removed] = result.splice(startIndex, 1)
+  //   result.splice(endIndex, 0, removed)
 
-    return result
-  }
+  //   return result
+  // }
   /*
   const onDragEnd = (result: any) => {
     const { destination, source, type } = result
@@ -155,7 +155,7 @@ const ListContainer = ({ lists, boardId, cards }: ListContainerProps) => {
   }
 */
 
-  const onDragEnd = (result: any) => {}
+  const onDragEnd = () => {}
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="lists" type="list" direction="horizontal">
