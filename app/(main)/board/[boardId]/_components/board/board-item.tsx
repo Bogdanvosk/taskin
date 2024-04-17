@@ -1,11 +1,11 @@
 'use client'
 
-import type { Board } from '@prisma/client'
+// import type { Board } from '@prisma/client'
 import { Heart } from 'lucide-react'
 import Link from 'next/link'
 
 interface BoardItemProps {
-  data: Board
+  data: any
 }
 
 export const BoardItem = ({ data }: BoardItemProps) => {

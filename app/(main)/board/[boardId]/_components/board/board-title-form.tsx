@@ -2,13 +2,14 @@
 
 import type { ElementRef } from 'react'
 import { useRef, useState } from 'react'
-import type { Board } from '@prisma/client'
+// import type { Board } from '@prisma/client'
 import { toast } from 'sonner'
 
 import { updateBoard } from '@/actions/update-board'
 import { FormInput } from '@/components/form/form-input'
 import { Button } from '@/components/ui/button'
 import { useAction } from '@/hooks/use-action'
+import { Board } from '@/types';
 
 interface BoardTitleFormProps {
   data: Board

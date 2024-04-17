@@ -2,7 +2,7 @@
 
 import type { ElementRef } from 'react'
 import { useRef } from 'react'
-import type { List } from '@prisma/client'
+// import type { List } from '@prisma/client'
 import { MoreHorizontal, X } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { useAction } from '@/hooks/use-action'
+import { List } from '@/types';
 
 interface ListOptionsProps {
   data: List

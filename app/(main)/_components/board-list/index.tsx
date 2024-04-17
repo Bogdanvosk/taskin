@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { Board } from '@prisma/client'
+// import type { Board } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { Heart, User2 } from 'lucide-react'
@@ -17,6 +17,7 @@ import { BoardItem } from '../../board/[boardId]/_components/board/board-item'
 
 import { Error } from './error'
 import { SkeletonBoardList } from './skeleton'
+import { Board } from '@/types';
 
 export const BoardList = () => {
   const [isShowingFavourites, setIsShowingFavourites] = useState(false)
