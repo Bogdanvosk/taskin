@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { useAction } from '@/hooks/use-action'
-import { List } from '@/types';
+import type { List } from '@/types'
 
 interface ListOptionsProps {
   data: List

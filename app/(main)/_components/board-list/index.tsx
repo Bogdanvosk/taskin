@@ -12,12 +12,12 @@ import { Button } from '@/components/ui/button'
 import { favouriteImage } from '@/constants/images'
 import { fetcher } from '@/lib/fetcher'
 import { cn } from '@/lib/utils'
+import type { Board } from '@/types'
 
 import { BoardItem } from '../../board/[boardId]/_components/board/board-item'
 
 import { Error } from './error'
 import { SkeletonBoardList } from './skeleton'
-import { Board } from '@/types';
 
 export const BoardList = () => {
   const [isShowingFavourites, setIsShowingFavourites] = useState(false)

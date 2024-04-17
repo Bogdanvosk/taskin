@@ -1,9 +1,9 @@
 import { auth } from '@clerk/nextjs'
-import { NextResponse } from 'next/server'
+// import { NextResponse } from 'next/server'
 
 // import { db } from '@/lib/db'
 
-export const GET = async () => {
+export const GET = () => {
   const { userId } = auth()
 
   if (!userId) {

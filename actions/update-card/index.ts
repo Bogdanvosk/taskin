@@ -1,51 +1,51 @@
-'use server'
+// 'use server'
 
-import { auth } from '@clerk/nextjs'
-import { revalidatePath } from 'next/cache'
+// import { auth } from '@clerk/nextjs'
+// import { revalidatePath } from 'next/cache'
 
-import { createSafeAction } from '@/lib/create-safe-action'
-// import { db } from '@/lib/db'
+// import { createSafeAction } from '@/lib/create-safe-action'
 
-import { updateCardSchema } from './schema'
-import type { InputType, ReturnType } from './types'
+// // import { db } from '@/lib/db'
+// import { updateCardSchema } from './schema'
+// import type { InputType, ReturnType } from './types'
 
-const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId } = auth()
+// const handler = async (data: InputType): Promise<ReturnType> => {
+//   const { userId } = auth()
 
-  if (!userId) {
-    return {
-      error: 'Unauthorized'
-    }
-  }
+//   if (!userId) {
+//     return {
+//       error: 'Unauthorized'
+//     }
+//   }
 
-  const { id, boardId, ...values } = data
+//   const { boardId } = data
 
-  let card
-  // try {
-  //   card = await db.card.update({
-  //     where: {
-  //       id,
-  //       list: {
-  //         board: {
-  //           userId
-  //         }
-  //       }
-  //     },
-  //     data: {
-  //       ...values
-  //     }
-  //   })
-  // } catch (error) {
-  //   return {
-  //     error: 'Failed to update card'
-  //   }
-  // }
+//   let card
+//   // try {
+//   //   card = await db.card.update({
+//   //     where: {
+//   //       id,
+//   //       list: {
+//   //         board: {
+//   //           userId
+//   //         }
+//   //       }
+//   //     },
+//   //     data: {
+//   //       ...values
+//   //     }
+//   //   })
+//   // } catch (error) {
+//   //   return {
+//   //     error: 'Failed to update card'
+//   //   }
+//   // }
 
-  revalidatePath(`/board/${boardId}`)
+//   revalidatePath(`/board/${boardId}`)
 
-  return {
-    data: card
-  }
-}
+//   return {
+//     data: card
+//   }
+// }
 
-export const updateCard = createSafeAction(updateCardSchema, handler)
+// export const updateCard = createSafeAction(updateCardSchema, handler)

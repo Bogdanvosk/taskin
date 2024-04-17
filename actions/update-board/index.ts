@@ -1,47 +1,47 @@
-'use server'
+// 'use server'
 
-import { auth } from '@clerk/nextjs'
-import { revalidatePath } from 'next/cache'
+// import { auth } from '@clerk/nextjs'
+// import { revalidatePath } from 'next/cache'
 
-import { createSafeAction } from '@/lib/create-safe-action'
-// import { db } from '@/lib/db'
+// import { createSafeAction } from '@/lib/create-safe-action'
 
-import { updateBoardSchema } from './schema'
-import type { InputType, ReturnType } from './types'
+// // import { db } from '@/lib/db'
+// import { updateBoardSchema } from './schema'
+// import type { InputType, ReturnType } from './types'
 
-const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId } = auth()
+// const handler = async (data: InputType): Promise<ReturnType> => {
+//   const { userId } = auth()
 
-  if (!userId) {
-    return {
-      error: 'Unauthorized'
-    }
-  }
+//   if (!userId) {
+//     return {
+//       error: 'Unauthorized'
+//     }
+//   }
 
-  const { title, id } = data
+//   const { title, id } = data
 
-  let board
-  // try {
-  //   board = await db.board.update({
-  //     where: {
-  //       id,
-  //       userId
-  //     },
-  //     data: {
-  //       title
-  //     }
-  //   })
-  // } catch (error) {
-  //   return {
-  //     error: 'Failed to update board'
-  //   }
-  // }
+//   let board
+//   // try {
+//   //   board = await db.board.update({
+//   //     where: {
+//   //       id,
+//   //       userId
+//   //     },
+//   //     data: {
+//   //       title
+//   //     }
+//   //   })
+//   // } catch (error) {
+//   //   return {
+//   //     error: 'Failed to update board'
+//   //   }
+//   // }
 
-  revalidatePath(`/board/${id}`)
+//   revalidatePath(`/board/${id}`)
 
-  return {
-    data: board
-  }
-}
+//   return {
+//     data: board
+//   }
+// }
 
-export const updateBoard = createSafeAction(updateBoardSchema, handler)
+// export const updateBoard = createSafeAction(updateBoardSchema, handler)
