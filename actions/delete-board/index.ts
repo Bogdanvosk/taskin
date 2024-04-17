@@ -1,14 +1,6 @@
 'use server'
 
 import { auth } from '@clerk/nextjs'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
-
-import { createSafeAction } from '@/lib/create-safe-action'
-
-import { deleteBoardSchema } from './schema'
-import type { InputType, ReturnType } from './types'
-import { db } from '@/lib/firebaseConfig'
 import {
   collection,
   deleteDoc,
@@ -17,6 +9,14 @@ import {
   query,
   where
 } from 'firebase/firestore'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+
+import { createSafeAction } from '@/lib/create-safe-action'
+import { db } from '@/lib/firebaseConfig'
+
+import { deleteBoardSchema } from './schema'
+import type { InputType, ReturnType } from './types'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth()

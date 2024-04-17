@@ -1,8 +1,10 @@
 'use client'
 
 import { MoreHorizontal, X } from 'lucide-react'
-
+import { useParams } from 'next/navigation'
 import { toast } from 'sonner'
+
+import { copyBoard } from '@/actions/copy-board'
 import { deleteBoard } from '@/actions/delete-board'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,8 +14,6 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover'
 import { useAction } from '@/hooks/use-action'
-import { useParams } from 'next/navigation'
-import { copyBoard } from '@/actions/copy-board'
 
 export const BoardOptions = () => {
   const { boardId } = useParams()

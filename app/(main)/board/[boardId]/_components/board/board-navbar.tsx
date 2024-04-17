@@ -1,14 +1,15 @@
 'use client'
 
+import { useParams } from 'next/navigation'
+import { toast } from 'sonner'
+
 import { changeFavourite } from '@/actions/change-favourite'
+import { useAction } from '@/hooks/use-action'
 
 import { FavouriteButton } from '../favourite-button'
 
 import { BoardOptions } from './board-options'
 import { BoardTitleForm } from './board-title-form'
-import { useAction } from '@/hooks/use-action'
-import { toast } from 'sonner'
-import { useParams } from 'next/navigation'
 
 interface BoardNavbarProps {
   data: any

@@ -1,16 +1,6 @@
 'use server'
 
 import { auth } from '@clerk/nextjs'
-// import type { Card } from '@prisma/client'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
-
-import { createSafeAction } from '@/lib/create-safe-action'
-
-// import { db } from '@/lib/db'
-// import type { ListWithCards } from '@/types'
-import { copyBoardSchema } from './schema'
-import type { InputType, ReturnType } from './types'
 import {
   addDoc,
   collection,
@@ -20,7 +10,17 @@ import {
   query,
   where
 } from 'firebase/firestore'
+// import type { Card } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+
+import { createSafeAction } from '@/lib/create-safe-action'
 import { db } from '@/lib/firebaseConfig'
+
+// import { db } from '@/lib/db'
+// import type { ListWithCards } from '@/types'
+import { copyBoardSchema } from './schema'
+import type { InputType, ReturnType } from './types'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth()

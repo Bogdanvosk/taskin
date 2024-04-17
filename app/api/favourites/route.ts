@@ -1,7 +1,8 @@
-import { db } from '@/lib/firebaseConfig'
 import { auth } from '@clerk/nextjs'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { NextResponse } from 'next/server'
+
+import { db } from '@/lib/firebaseConfig'
 
 export const GET = async () => {
   const { userId } = auth()

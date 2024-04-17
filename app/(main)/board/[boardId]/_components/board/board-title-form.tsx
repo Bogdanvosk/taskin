@@ -2,14 +2,14 @@
 
 import type { ElementRef } from 'react'
 import { useRef, useState } from 'react'
-
+import { useParams } from 'next/navigation'
 import { toast } from 'sonner'
+
 import { updateBoard } from '@/actions/update-board'
 import { FormInput } from '@/components/form/form-input'
 import { Button } from '@/components/ui/button'
 import { useAction } from '@/hooks/use-action'
 import type { Board } from '@/types'
-import { useParams } from 'next/navigation'
 
 interface BoardTitleFormProps {
   data: Board

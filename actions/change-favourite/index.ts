@@ -1,14 +1,14 @@
 'use server'
 
 import { auth } from '@clerk/nextjs'
+import { doc, updateDoc } from 'firebase/firestore'
 import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
+import { db } from '@/lib/firebaseConfig'
 
 import { changeFavouriteSchema } from './schema'
 import type { InputType, ReturnType } from './types'
-import { doc, updateDoc } from 'firebase/firestore'
-import { db } from '@/lib/firebaseConfig'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth()
@@ -21,12 +21,10 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   const { id, isFavourite } = data
 
-  let board
-
   try {
     const boardRef = doc(db, 'boards', id)
 
-    board = await updateDoc(boardRef, {
+    await updateDoc(boardRef, {
       isFavourite: !isFavourite
     })
   } catch (error) {
