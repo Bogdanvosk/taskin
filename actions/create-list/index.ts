@@ -1,15 +1,15 @@
 'use server'
 
 import { auth } from '@clerk/nextjs'
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
 import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
-// import { db } from '@/lib/db'
+import { db } from '@/lib/firebaseConfig'
 
+// import { db } from '@/lib/db'
 import { createListSchema } from './schema'
 import type { InputType, ReturnType } from './types'
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
-import { db } from '@/lib/firebaseConfig'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth()
@@ -49,8 +49,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     const lastList = data.docs.filter((doc) => doc.id === boardId)
 
-    console.log("LAST", lastList)
-
     // const lastList = await db.list.findFirst({
     //   where: {
     //     boardId
@@ -79,8 +77,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     //   }
     // })
   } catch (err) {
-    // console.log("ERR", err);
-    
     return {
       error: 'Failed to create list'
     }

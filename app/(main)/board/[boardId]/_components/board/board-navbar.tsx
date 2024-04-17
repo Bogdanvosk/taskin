@@ -16,8 +16,6 @@ interface BoardNavbarProps {
 }
 
 export const BoardNavbar = ({ data }: BoardNavbarProps) => {
-  // console.log('data', data);
-  
   const { execute } = useAction(changeFavourite, {
     onSuccess: (data) => {
       toast.success(

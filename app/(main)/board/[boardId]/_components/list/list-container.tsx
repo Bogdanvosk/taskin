@@ -8,19 +8,19 @@ import { toast } from 'sonner'
 import { updateCardOrder } from '@/actions/update-card-order'
 import { updateListOrder } from '@/actions/update-list-order'
 import { useAction } from '@/hooks/use-action'
-import type { ListWithCards } from '@/types'
+import type { List} from '@/types'
 
 import { ListForm } from './list-form'
 import { ListItem } from './list-item'
 
+// TODO: remove props drilling using context
 interface ListContainerProps {
   boardId: string
-  lists: any
+  lists: List[]
+  cards: any
 }
 
-const ListContainer = ({ lists, boardId }: ListContainerProps) => {
-  console.log('lists', lists);
-  
+const ListContainer = ({ lists, boardId, cards }: ListContainerProps) => {
   const [orderedData, setOrderedData] = useState(lists)
 
   const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
@@ -166,7 +166,14 @@ const ListContainer = ({ lists, boardId }: ListContainerProps) => {
             className="flex gap-x-3 h-full transition"
           >
             {orderedData.map((list: any, index: number) => {
-              return <ListItem key={list.id} index={index} data={list} />
+              return (
+                <ListItem
+                  key={list.id}
+                  index={index}
+                  data={list}
+                  cards={cards}
+                />
+              )
             })}
             {provided.placeholder}
             <ListForm />

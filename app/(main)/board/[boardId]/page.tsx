@@ -1,9 +1,11 @@
 import { auth } from '@clerk/nextjs'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { redirect } from 'next/navigation'
 
-import ListContainer from './_components/list/list-container'
-import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '@/lib/firebaseConfig'
+import type { List } from '@/types'
+
+import ListContainer from './_components/list/list-container'
 
 interface BoardIdPageProps {
   params: {
@@ -13,6 +15,8 @@ interface BoardIdPageProps {
 
 const BoardIdPage = async ({ params }: BoardIdPageProps) => {
   const { userId } = auth()
+
+  // const { updateLists } = useStore((state) => state)
 
   if (!userId) {
     redirect('/sign-in')
@@ -28,30 +32,33 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
   const lists = data.docs.map((doc) => {
     return {
       id: doc.id,
-      // cards,
       ...doc.data()
     }
   })
 
-  // lists.forEach(async (list) => {
-  //   const cardsQ = query(
-  //     collection(db, 'cards'),
-  //     where('listId', '==', list.id)
-  //   )
+  const cards = []
+  const getCards = async (listId: string) => {
+    const cardsQ = query(collection(db, 'cards'), where('listId', '==', listId))
 
-  //   const data = await getDocs(cardsQ)
+    const data = await getDocs(cardsQ)
 
-  //   data.docs.forEach((doc) => console.log(doc.data()))
+    return data
+  }
 
-  //   cards.push(
-  //     data.docs.map((doc) => {
-  //       id: doc.id,
-  //         ...doc.data()
-  //     })
-  //   )
-  // })
-  
+  for (let i = 0; i < lists.length; i++) {
+    const data = await getCards(lists[i].id)
 
+    cards.push(
+      data.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data()
+        }
+      })
+    )
+  }
+
+  // lists.forEach((list) => {})
 
   // const lists = await db.list.findMany({
   //   where: {
@@ -74,7 +81,11 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
 
   return (
     <div className="relative p-4 h-full overflow-x-auto scrollbar">
-      <ListContainer boardId={params.boardId} lists={lists} />
+      <ListContainer
+        boardId={params.boardId}
+        lists={lists as List[]}
+        cards={cards}
+      />
     </div>
   )
 }

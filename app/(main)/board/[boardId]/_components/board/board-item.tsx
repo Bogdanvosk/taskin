@@ -9,7 +9,6 @@ interface BoardItemProps {
 }
 
 export const BoardItem = ({ data }: BoardItemProps) => {
-  // console.log('data', data)
   return (
     <Link
       href={`/board/${data.id}`}

@@ -2,7 +2,6 @@
 
 import type { ElementRef } from 'react'
 import { useRef, useState } from 'react'
-import type { List } from '@prisma/client'
 import { toast } from 'sonner'
 import { useEventListener } from 'usehooks-ts'
 

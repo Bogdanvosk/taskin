@@ -1,9 +1,8 @@
 import { auth } from '@clerk/nextjs'
+// import { db } from '@/lib/db'
+import { collection, getDocs } from 'firebase/firestore'
 import { NextResponse } from 'next/server'
 
-// import { db } from '@/lib/db'
-
-import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore'
 import { db } from '@/lib/firebaseConfig'
 
 export const GET = async () => {
@@ -15,7 +14,7 @@ export const GET = async () => {
 
   try {
     const data = await getDocs(collection(db, 'boards'))
-    
+
     const boards = data.docs.map((doc) => {
       return {
         id: doc.id,

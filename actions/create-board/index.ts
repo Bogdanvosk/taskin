@@ -1,17 +1,15 @@
 'use server'
 
 import { auth } from '@clerk/nextjs'
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
 import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
 // import { db } from '@/lib/db'
-
 import { db } from '@/lib/firebaseConfig'
 
 import { createBoardSchema } from './schema'
 import type { InputType, ReturnType } from './types'
-
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth()
@@ -49,8 +47,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       imageUserName,
       isFavourite: false
     })
-
-    // console.log('Document written with ID: ', board)
   } catch (error) {
     return {
       error: 'Failed to create board'

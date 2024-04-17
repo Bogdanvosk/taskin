@@ -1,11 +1,10 @@
 import { auth } from '@clerk/nextjs'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { notFound } from 'next/navigation'
 
-// import { db } from '@/lib/db'
+import { db } from '@/lib/firebaseConfig'
 
 import { BoardNavbar } from './_components/board/board-navbar'
-import { collection, getDoc, getDocs, query, where } from 'firebase/firestore'
-import { db } from '@/lib/firebaseConfig'
 
 export async function generateMetadata({
   params

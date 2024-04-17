@@ -1,15 +1,15 @@
 'use server'
 
 import { auth } from '@clerk/nextjs'
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
 import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
-// import { db } from '@/lib/db'
+import { db } from '@/lib/firebaseConfig'
 
+// import { db } from '@/lib/db'
 import { createCardSchema } from './schema'
 import type { InputType, ReturnType } from './types'
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
-import { db } from '@/lib/firebaseConfig'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth()
@@ -34,8 +34,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     const listsQ = query(listsRef, where('boardId', '==', boardId))
 
     const listsData = await getDocs(listsQ)
-
-    listsData.docs.forEach((doc) => console.log(doc.data()))
 
     const list = listsData.docs.filter((doc) => doc.id === listId)[0].data()
 
@@ -77,8 +75,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     //   }
     // })
   } catch (err) {
-    // console.log('ERR', err)
-
     return {
       error: `${err}`
     }
