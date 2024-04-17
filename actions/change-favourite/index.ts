@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs'
 import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
-import { db } from '@/lib/db'
+// import { db } from '@/lib/db'
 
 import { changeFavouriteSchema } from './schema'
 import type { InputType, ReturnType } from './types'
@@ -21,21 +21,21 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   const { id, isFavourite } = data
 
   let board
-  try {
-    board = await db.board.update({
-      where: {
-        id,
-        userId
-      },
-      data: {
-        isFavourite: !isFavourite
-      }
-    })
-  } catch (error) {
-    return {
-      error: 'Failed to update board'
-    }
-  }
+  // try {
+  //   board = await db.board.update({
+  //     where: {
+  //       id,
+  //       userId
+  //     },
+  //     data: {
+  //       isFavourite: !isFavourite
+  //     }
+  //   })
+  // } catch (error) {
+  //   return {
+  //     error: 'Failed to update board'
+  //   }
+  // }
 
   revalidatePath(`/board/${id}`)
 
