@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs'
 // import { db } from '@/lib/db'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { NextResponse } from 'next/server'
 
 import { db } from '@/lib/firebaseConfig'
@@ -13,7 +13,12 @@ export const GET = async () => {
   }
 
   try {
-    const data = await getDocs(collection(db, 'boards'))
+    const boardsQ = query(
+      collection(db, 'boards'),
+      where('userId', '==', userId)
+    )
+
+    const data = await getDocs(boardsQ)
 
     const boards = data.docs.map((doc) => {
       return {
