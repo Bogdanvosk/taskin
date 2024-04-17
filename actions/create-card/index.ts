@@ -1,7 +1,15 @@
 'use server'
 
 import { auth } from '@clerk/nextjs'
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where
+} from 'firebase/firestore'
 import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
@@ -37,15 +45,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     const list = listsData.docs.filter((doc) => doc.id === listId)[0].data()
 
-    // const list = await db.list.findUnique({
-    //   where: {
-    //     id: listId,
-    //     board: {
-    //       userId
-    //     }
-    //   }
-    // })
-
     if (!list) {
       return {
         error: 'List not found'
@@ -55,25 +54,34 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     const cardsRef = collection(db, 'cards')
     const data = await getDocs(cardsRef)
 
-    const lastCard = data.docs.filter((doc) => doc.id === boardId)
+    // const lastCard = data.docs.filter((doc) => doc.id === boardId)
 
-    const newOrder = lastCard.length > 0 ? lastCard[0].data().order + 1 : 1
+    // const newOrder = lastCard.length > 0 ? lastCard[0].data().order + 1 : 1
+
+    const lastCard = data.docs
+    let lastOrder = 0
+
+    lastCard
+      .filter((doc) => doc.data().listId === listId)
+      .sort((a, b) => a.data().order - b.data().order)
+      .forEach((doc) => {
+        lastOrder = doc.data().order
+      })
+
+    const newOrder = lastOrder + 1
 
     card = await addDoc(collection(db, 'cards'), {
       title,
       listId,
       description,
+      boardId: list.boardId,
       order: newOrder
     })
+    const cardRef = doc(db, 'cards', card.id)
 
-    // card = await db.card.create({
-    //   data: {
-    //     title,
-    //     listId,
-    //     description,
-    //     order: newOrder
-    //   }
-    // })
+    await updateDoc(cardRef, {
+      id: card.id
+    })
   } catch (err) {
     return {
       error: `${err}`

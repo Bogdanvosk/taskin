@@ -8,6 +8,7 @@ import {
   getDoc,
   getDocs,
   query,
+  updateDoc,
   where
 } from 'firebase/firestore'
 // import type { Card } from '@prisma/client'
@@ -44,7 +45,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     const listsToCopy = data.docs.map((doc) => {
       return {
         id: doc.id,
-        ...doc.data()
+        title: doc.data().title,
+        order: doc.data().order
       }
     })
 
@@ -63,73 +65,43 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       isFavourite: boardToCopy.data()?.isFavourite
     })
 
-    for (let i = 0; i < listsToCopy.length; i++) {
-      await addDoc(collection(db, 'lists'), {
-        ...listsToCopy[i],
+    for (const list of listsToCopy) {
+      const newList = await addDoc(collection(db, 'lists'), {
+        ...list,
         boardId: board.id
       })
 
-      // TODO: copying cards
-      // await addDoc(collection(db, 'cards'), {
-      //   ...listsToCopy[i],
-      //   listId: listsToCopy[i].id
-      // })
+      await updateDoc(doc(db, 'lists', newList.id), {
+        id: newList.id
+      })
+
+      const cardsQ = query(
+        collection(db, 'cards'),
+        where('listId', '==', list.id)
+      )
+
+      const data = await getDocs(cardsQ)
+
+      const cardsToCopy = data.docs.map((doc) => {
+        return {
+          ...doc.data(),
+          id: doc.id
+        }
+      })
+
+      for (const card of cardsToCopy) {
+        await addDoc(collection(db, 'cards'), {
+          ...card,
+          listId: newList.id,
+          boardId: board.id
+        })
+      }
     }
   } catch (error) {
     return {
       error: `Failed to copy board`
     }
   }
-
-  // try {
-  //   const boardToCopy = await db.board.findUnique({
-  //     where: {
-  //       id,
-  //       userId
-  //     },
-  //     include: {
-  //       lists: {
-  //         include: {
-  //           cards: true
-  //         }
-  //       }
-  //     }
-  //   })
-
-  //   if (!boardToCopy) {
-  //     return { error: 'Board not found' }
-  //   }
-
-  //   await db.board.create({
-  //     data: {
-  //       title: `${boardToCopy.title} - Copy`,
-  //       userId: boardToCopy.userId,
-  //       imageId: boardToCopy.imageId,
-  //       imageThumbUrl: boardToCopy.imageThumbUrl,
-  //       imageFullUrl: boardToCopy.imageFullUrl,
-  //       imageUserName: boardToCopy.imageUserName,
-  //       imageLinkHtml: boardToCopy.imageLinkHtml,
-  //       isFavourite: boardToCopy.isFavourite
-  //       // lists: {
-  //       //   create: boardToCopy.lists.map((list: ListWithCards) => ({
-  //       //     title: list.title,
-  //       //     order: list.order,
-  //       //     cards: {
-  //       //       create: list.cards.map((card: Card) => ({
-  //       //         title: card.title,
-  //       //         description: card.description,
-  //       //         order: card.order
-  //       //       }))
-  //       //     }
-  //       //   }))
-  //       // }
-  //     }
-  //   })
-  // } catch (err) {
-  //   return {
-  //     error: `Failed to copy board`
-  //   }
-  // }
 
   revalidatePath(`/`)
   redirect(`/`)

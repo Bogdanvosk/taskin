@@ -1,7 +1,15 @@
 'use server'
 
 import { auth } from '@clerk/nextjs'
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where
+} from 'firebase/firestore'
 import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
@@ -47,21 +55,17 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     const listsRef = collection(db, 'lists')
     const data = await getDocs(listsRef)
 
-    const lastList = data.docs.filter((doc) => doc.id === boardId)
+    const lastList = data.docs
+    let lastOrder = 0
 
-    // const lastList = await db.list.findFirst({
-    //   where: {
-    //     boardId
-    //   },
-    //   orderBy: {
-    //     order: 'desc'
-    //   },
-    //   select: {
-    //     order: true
-    //   }
-    // })
+    lastList
+      .filter((doc) => doc.data().boardId === boardId)
+      .sort((a, b) => a.data().order - b.data().order)
+      .forEach((doc) => {
+        lastOrder = doc.data().order
+      })
 
-    const newOrder = lastList.length > 0 ? lastList[0].data().order + 1 : 1
+    const newOrder = lastOrder + 1
 
     list = await addDoc(collection(db, 'lists'), {
       title,
@@ -69,13 +73,11 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       order: newOrder
     })
 
-    // list = await db.list.create({
-    //   data: {
-    //     title,
-    //     boardId,
-    //     order: newOrder
-    //   }
-    // })
+    const listRef = doc(db, 'lists', list.id)
+
+    await updateDoc(listRef, {
+      id: list.id
+    })
   } catch (err) {
     return {
       error: 'Failed to create list'

@@ -36,7 +36,11 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
 
   const cards = []
   const getCards = async (listId: string) => {
-    const cardsQ = query(collection(db, 'cards'), where('listId', '==', listId))
+    const cardsQ = query(
+      collection(db, 'cards'),
+      where('listId', '==', listId),
+      where('boardId', '==', params.boardId)
+    )
 
     const data = await getDocs(cardsQ)
 
@@ -55,27 +59,6 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
       })
     )
   }
-
-  // lists.forEach((list) => {})
-
-  // const lists = await db.list.findMany({
-  //   where: {
-  //     boardId: params.boardId,
-  //     board: {
-  //       userId
-  //     }
-  //   },
-  //   include: {
-  //     cards: {
-  //       orderBy: {
-  //         order: 'asc'
-  //       }
-  //     }
-  //   },
-  //   orderBy: {
-  //     order: 'asc'
-  //   }
-  // })
 
   return (
     <div className="relative p-4 h-full overflow-x-auto scrollbar">

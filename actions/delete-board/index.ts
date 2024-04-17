@@ -30,7 +30,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   const { id } = data
 
   try {
-    // TODO: delete cards and lists with board
     await deleteDoc(doc(db, 'boards', id))
 
     const listsQ = query(collection(db, 'lists'), where('boardId', '==', id))
@@ -39,25 +38,22 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     const listsToDelete = data.docs.map((doc) => {
       return {
-        id: doc.id,
-        ...doc.data()
+        ...doc.data(),
+        id: doc.id
       }
     })
 
     for (const list of listsToDelete) {
       await deleteDoc(doc(db, 'lists', list.id))
 
-      const cardsQ = query(
-        collection(db, 'cards'),
-        where('listId', '==', list.id)
-      )
+      const cardsQ = query(collection(db, 'cards'), where('boardId', '==', id))
 
       const data = await getDocs(cardsQ)
 
       const cardsToDelete = data.docs.map((doc) => {
         return {
-          id: doc.id,
-          ...doc.data()
+          ...doc.data(),
+          id: doc.id
         }
       })
 

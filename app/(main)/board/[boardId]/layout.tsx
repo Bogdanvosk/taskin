@@ -44,7 +44,7 @@ const BoardIdLayout = async ({
 
   const data = await getDocs(q)
 
-  const board = data.docs.filter((doc) => doc.id === params.boardId)[0].data()
+  const board = data.docs.find((doc) => doc.id === params.boardId)?.data()
 
   if (!board) {
     notFound()
