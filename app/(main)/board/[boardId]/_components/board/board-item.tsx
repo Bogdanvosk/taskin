@@ -4,6 +4,8 @@
 import { Heart } from 'lucide-react'
 import Link from 'next/link'
 
+import { cn } from '@/lib/utils'
+
 interface BoardItemProps {
   data: any
 }
@@ -21,7 +23,12 @@ export const BoardItem = ({ data }: BoardItemProps) => {
         <Heart className="absolute right-2 top-2 z-10 fill-red-500 stroke-red-500" />
       )}
       <div className="z-5 absolute inset-0 bg-black/50 group-hover:bg-black/40 transition" />
-      <p className="relative font-semibold text-white text-sm xs:text-[16px]">
+      <p
+        className={cn(
+          'relative font-semibold text-white text-sm xs:text-[16px]',
+          data.isFavourite && 'pr-6'
+        )}
+      >
         {data.title}
       </p>
     </Link>
