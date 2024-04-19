@@ -4,7 +4,7 @@ import type { ElementRef } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { Draggable, Droppable } from '@hello-pangea/dnd'
 
-import type { Card, List, ListWithCards } from '@/types'
+import type { Card } from '@/types'
 
 import { CardForm } from '../card/card-form'
 import { CardItem } from '../card/card-item'

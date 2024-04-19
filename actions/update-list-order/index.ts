@@ -1,22 +1,14 @@
 'use server'
 
 import { auth } from '@clerk/nextjs'
+import { doc, writeBatch } from 'firebase/firestore'
 import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
+import { db } from '@/lib/firebaseConfig'
 
 import { updateListOrderSchema } from './schema'
 import type { InputType, ReturnType } from './types'
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  runTransaction,
-  where,
-  writeBatch
-} from 'firebase/firestore'
-import { db } from '@/lib/firebaseConfig'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth()

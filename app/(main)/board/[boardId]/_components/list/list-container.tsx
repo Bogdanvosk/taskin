@@ -2,21 +2,21 @@
 
 import { useEffect, useState } from 'react'
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
+import { debounce } from 'lodash'
+import { useParams } from 'next/navigation'
+import { toast } from 'sonner'
 
+import { updateCardOrder } from '@/actions/update-card-order'
 // import { debounce } from 'lodash'
 // import { toast } from 'sonner'
 // import { updateCardOrder } from '@/actions/update-card-order'
 import { updateListOrder } from '@/actions/update-list-order'
+import { useAction } from '@/hooks/use-action'
 // import { useAction } from '@/hooks/use-action'
 import type { Card, List, ListWithCards } from '@/types'
 
 import { ListForm } from './list-form'
 import { ListItem } from './list-item'
-import { toast } from 'sonner'
-import { useAction } from '@/hooks/use-action'
-import { useParams } from 'next/navigation'
-import { debounce } from 'lodash'
-import { updateCardOrder } from '@/actions/update-card-order'
 
 // TODO: remove props drilling using context
 interface ListContainerProps {
@@ -91,39 +91,24 @@ const ListContainer = ({ lists, cards }: ListContainerProps) => {
 
     // * user moves card
     if (type === 'card') {
-      let newOrderedLists = [...orderedLists]
+      const newOrderedLists = [...orderedLists]
       const newOrderedCards = [...orderedCards]
 
-      console.log('cards', cards)
-
       let sourceList = cards.find(
-        (list: Card[]) => list[0].listId === source.droppableId
+        (list: Card[]) => list[0]?.listId === source.droppableId
       )
 
-      let destinationList = cards.find((list: Card[]) => {
-        if (!list[0]) return []
-        list[0].listId === destination.droppableId
-      })
-
-      console.log('destinationList', destinationList)
-
-      // const srcList = newOrderedLists.find(
-      //   (list) => list.id === source.droppableId
-      // )
-
-      // const destList = newOrderedLists.find(
-      //   (list) => list.id === destination.droppableId
-      // )
-
-      // if (!sourceList || !destinationList) return
+      let destinationList = cards.find(
+        (list: Card[]) => list[0]?.listId === destination.droppableId
+      )
 
       if (!sourceList) {
         sourceList = []
       }
 
-      // if (!destinationList) {
-      //   destinationList = []
-      // }
+      if (!destinationList) {
+        destinationList = []
+      }
 
       // * user moves card in the same list
       if (destination.droppableId === source.droppableId) {
@@ -132,8 +117,6 @@ const ListContainer = ({ lists, cards }: ListContainerProps) => {
           source.index,
           destination.index
         )
-
-        // console.log('reorderedCards', reorderedCards)
 
         reorderedCards = reorderedCards.map((card, index) => ({
           ...card,
@@ -155,20 +138,20 @@ const ListContainer = ({ lists, cards }: ListContainerProps) => {
           boardId: boardId as string
         })
 
-        // TODO: 
+        // TODO:
       } else {
         // * remove card from the sourceList
         const [removedCard] = sourceList.splice(source.index, 1)
         removedCard.listId = destination.droppableId
 
-        console.log('removedCard', removedCard)
-
         // * add card to the destinationList
         destinationList.splice(destination.index, 0, removedCard)
 
+        setOrderedLists(newOrderedLists)
+
         // * update card order for sourceList and destinationList
         sourceList.forEach((card: Card, index: number) => {
-          card.order = index
+          card.order = index + 1
         })
 
         executeUpdateCardOrder({
@@ -177,14 +160,12 @@ const ListContainer = ({ lists, cards }: ListContainerProps) => {
         })
 
         destinationList.forEach((card: Card, index: number) => {
-          card.order = index
+          card.order = index + 1
         })
-
         executeUpdateCardOrder({
           items: destinationList,
           boardId: boardId as string
         })
-
         setOrderedLists(newOrderedLists)
       }
     }

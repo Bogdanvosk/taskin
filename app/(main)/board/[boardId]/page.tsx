@@ -27,7 +27,7 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
 
   const data = await getDocs(listsQ)
 
-  let lists = data.docs
+  const lists = data.docs
     .map((doc) => {
       return {
         id: doc.id,
@@ -50,8 +50,8 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
     return data
   }
 
-  for (let i = 0; i < lists.length; i++) {
-    const data = await getCards(lists[i].id)
+  for (const list of lists) {
+    const data = await getCards(list.id)
 
     cards.push(
       data.docs.map((doc) => {
