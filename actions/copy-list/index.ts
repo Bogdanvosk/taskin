@@ -1,78 +1,90 @@
-// 'use server'
+'use server'
 
-// import { auth } from '@clerk/nextjs'
-// // import type { Card } from '@prisma/client'
-// import { revalidatePath } from 'next/cache'
+import { auth } from '@clerk/nextjs'
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where
+} from 'firebase/firestore'
+// import type { Card } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
 
-// import { createSafeAction } from '@/lib/create-safe-action'
+import { createSafeAction } from '@/lib/create-safe-action'
+import { db } from '@/lib/firebaseConfig'
 
-// // import { db } from '@/lib/db'
-// import { copyListSchema } from './schema'
-// import type { InputType, ReturnType } from './types'
+// import { db } from '@/lib/db'
+import { copyListSchema } from './schema'
+import type { InputType, ReturnType } from './types'
 
-// const handler = async (data: InputType): Promise<ReturnType> => {
-//   const { userId } = auth()
+const handler = async (data: InputType): Promise<ReturnType> => {
+  const { userId } = auth()
 
-//   if (!userId) {
-//     return {
-//       error: 'Unauthorized'
-//     }
-//   }
+  if (!userId) {
+    return {
+      error: 'Unauthorized'
+    }
+  }
 
-//   const { id, boardId } = data
-//   let list
+  const { id, boardId } = data
 
-//   // try {
-//   //   const listToCopy = await db.list.findUnique({
-//   //     where: {
-//   //       id,
-//   //       boardId,
-//   //       board: {
-//   //         userId
-//   //       }
-//   //     },
-//   //     include: {
-//   //       cards: true
-//   //     }
-//   //   })
+  const listRef = doc(db, 'lists', id)
+  const listToCopy = await getDoc(listRef)
 
-//   //   if (!listToCopy) {
-//   //     return { error: 'List not found' }
-//   //   }
+  const cardsQ = query(collection(db, 'cards'), where('listId', '==', id))
 
-//   //   const lastList = await db.list.findFirst({
-//   //     where: { boardId },
-//   //     orderBy: { order: 'desc' },
-//   //     select: { order: true }
-//   //   })
+  const cardsData = await getDocs(cardsQ)
 
-//   //   const newOrder = lastList ? lastList.order + 1 : 1
+  const cardsToCopy = cardsData.docs.map((doc) => {
+    return {
+      ...doc.data(),
+      id: doc.id
+    }
+  })
 
-//   //   list = await db.list.create({
-//   //     data: {
-//   //       boardId: listToCopy.boardId,
-//   //       title: `${listToCopy.title} - Copy`,
-//   //       order: newOrder,
-//   //       cards: {
-//   //         create: listToCopy.cards.map((card: Card) => ({
-//   //           title: card.title,
-//   //           description: card.description,
-//   //           order: card.order
-//   //         }))
-//   //       }
-//   //     },
-//   //     include: {
-//   //       cards: true
-//   //     }
-//   //   })
-//   // } catch (error) {
-//   //   return {
-//   //     error: `Failed to copy list`
-//   //   }
-//   // }
+  if (!listToCopy.data() || !cardsToCopy) {
+    return { error: 'List not found' }
+  }
 
-//   revalidatePath(`/board/${boardId}`)
-//   return { data: list }
-// }
+  const listsRef = collection(db, 'lists')
+  const listsData = await getDocs(listsRef)
 
-// export const copyList = createSafeAction(copyListSchema, handler)
+  const lastList = listsData.docs
+  let lastOrder = 0
+
+  lastList
+    .filter((doc) => doc.data().boardId === boardId)
+    .sort((a, b) => a.data().order - b.data().order)
+    .forEach((doc) => {
+      lastOrder = doc.data().order
+    })
+
+  const newOrder = lastOrder + 1
+
+  const list = await addDoc(collection(db, 'lists'), {
+    title: `${listToCopy.data()?.title} - Copy`,
+    boardId: listToCopy.data()?.boardId,
+    order: newOrder
+  })
+
+  for (const card of cardsToCopy) {
+    const newCard = await addDoc(collection(db, 'cards'), {
+      ...card,
+      listId: list.id,
+      boardId: listToCopy.data()?.boardId
+    })
+
+    await updateDoc(doc(db, 'cards', newCard.id), {
+      id: newCard.id
+    })
+  }
+
+  revalidatePath(`/board/${boardId}`)
+  return { data: id }
+}
+
+export const copyList = createSafeAction(copyListSchema, handler)

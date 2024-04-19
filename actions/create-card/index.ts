@@ -54,10 +54,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     const cardsRef = collection(db, 'cards')
     const data = await getDocs(cardsRef)
 
-    // const lastCard = data.docs.filter((doc) => doc.id === boardId)
-
-    // const newOrder = lastCard.length > 0 ? lastCard[0].data().order + 1 : 1
-
     const lastCard = data.docs
     let lastOrder = 0
 

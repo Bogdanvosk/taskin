@@ -40,9 +40,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     const listsQ = query(collection(db, 'lists'), where('boardId', '==', id))
 
-    const data = await getDocs(listsQ)
+    const listsData = await getDocs(listsQ)
 
-    const listsToCopy = data.docs.map((doc) => {
+    const listsToCopy = listsData.docs.map((doc) => {
       return {
         id: doc.id,
         title: doc.data().title,

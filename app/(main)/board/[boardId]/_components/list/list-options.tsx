@@ -4,7 +4,10 @@ import type { ElementRef } from 'react'
 import { useRef } from 'react'
 // import type { List } from '@prisma/client'
 import { MoreHorizontal, X } from 'lucide-react'
+import { toast } from 'sonner'
 
+import { copyList } from '@/actions/copy-list'
+import { deleteList } from '@/actions/delete-list'
 // import { toast } from 'sonner'
 // import { copyList } from '@/actions/copy-list'
 // import { deleteList } from '@/actions/delete-list'
@@ -17,6 +20,7 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
+import { useAction } from '@/hooks/use-action'
 // import { useAction } from '@/hooks/use-action'
 import type { List } from '@/types'
 
@@ -28,42 +32,42 @@ interface ListOptionsProps {
 export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
   const closeButtonRef = useRef<ElementRef<'button'>>(null)
 
-  // const { execute: executeDelete } = useAction(deleteList, {
-  //   onSuccess(data) {
-  //     toast.success(`List "${data.title}" deleted`)
-  //     closeButtonRef.current?.click()
-  //   },
-  //   onError(error) {
-  //     toast.error(error)
-  //   }
-  // })
+  const { execute: executeDelete } = useAction(deleteList, {
+    onSuccess() {
+      toast.success(`List deleted`)
+      closeButtonRef.current?.click()
+    },
+    onError(error) {
+      toast.error(error)
+    }
+  })
 
-  // const { execute: executeCopy } = useAction(copyList, {
-  //   onSuccess(data) {
-  //     toast.success(`List "${data.title}" copied`)
-  //     closeButtonRef.current?.click()
-  //   },
-  //   onError(error) {
-  //     toast.error(error)
-  //   }
-  // })
+  const { execute: executeCopy } = useAction(copyList, {
+    onSuccess() {
+      toast.success(`List copied`)
+      closeButtonRef.current?.click()
+    },
+    onError(error) {
+      toast.error(error)
+    }
+  })
 
-  const onDeleteList = () => {
-    // const id = formData.get('id') as string
-    // const boardId = formData.get('boardId') as string
-    // executeDelete({
-    //   id,
-    //   boardId
-    // })
+  const onDeleteList = (formData: FormData) => {
+    const id = formData.get('id') as string
+    const boardId = formData.get('boardId') as string
+    executeDelete({
+      id,
+      boardId
+    })
   }
 
-  const onCopyList = () => {
-    // const id = formData.get('id') as string
-    // const boardId = formData.get('boardId') as string
-    // executeCopy({
-    //   id,
-    //   boardId
-    // })
+  const onCopyList = (formData: FormData) => {
+    const id = formData.get('id') as string
+    const boardId = formData.get('boardId') as string
+    executeCopy({
+      id,
+      boardId
+    })
   }
 
   return (
