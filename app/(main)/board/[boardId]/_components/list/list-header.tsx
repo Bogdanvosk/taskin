@@ -2,11 +2,14 @@
 
 import type { ElementRef } from 'react'
 import { useRef, useState } from 'react'
+import { toast } from 'sonner'
 // import { toast } from 'sonner'
 import { useEventListener } from 'usehooks-ts'
 
+import { updateList } from '@/actions/update-list'
 // import { updateList } from '@/actions/update-list'
 import { FormInput } from '@/components/form/form-input'
+import { useAction } from '@/hooks/use-action'
 // import { useAction } from '@/hooks/use-action'
 import { cn } from '@/lib/utils'
 
@@ -23,7 +26,7 @@ export const ListHeader = ({
   onAddCard,
   onChangeIsEditing
 }: ListHeaderProps) => {
-  const [title] = useState(data.title)
+  const [title, setTitle] = useState(data.title)
   const [isEditing, setIsEditing] = useState(false)
 
   const formRef = useRef<ElementRef<'form'>>(null)
@@ -42,16 +45,16 @@ export const ListHeader = ({
     onChangeIsEditing(false)
   }
 
-  // const { execute, fieldErrors } = useAction(updateList, {
-  //   onSuccess: (data) => {
-  //     toast.success(`List "${data.title}" updated`)
-  //     setTitle(data.title)
-  //     disableEditing()
-  //   },
-  //   onError: (error) => {
-  //     toast.error(error)
-  //   }
-  // })
+  const { execute, fieldErrors } = useAction(updateList, {
+    onSuccess: () => {
+      toast.success(`List updated`)
+
+      disableEditing()
+    },
+    onError: (error) => {
+      toast.error(error)
+    }
+  })
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape' || e.key === 'Enter') {
@@ -62,19 +65,20 @@ export const ListHeader = ({
   const onUpdateList = (formData: FormData) => {
     const newTitle = formData.get('title') as string
 
-    // const { id } = data
-    // const { boardId } = data
+    const { id } = data
+    const { boardId } = data
 
     if (title === newTitle) {
       disableEditing()
       return
     }
+    setTitle(newTitle)
 
-    // execute({
-    //   id,
-    //   title: newTitle,
-    //   boardId
-    // })
+    execute({
+      id,
+      title: newTitle,
+      boardId
+    })
   }
 
   const onInputBlur = () => {
@@ -86,8 +90,8 @@ export const ListHeader = ({
   return (
     <div
       className={cn(
-        'pt-2 px-2 text-sm font-semibold flex justify-between items-start gap-x-2'
-        // fieldErrors ? 'mb-2' : 'mb-0'
+        'pt-2 px-2 text-sm font-semibold flex justify-between items-start gap-x-2',
+        fieldErrors ? 'mb-2' : 'mb-0'
       )}
     >
       {isEditing ? (
@@ -99,7 +103,7 @@ export const ListHeader = ({
             defaultValue={title}
             onBlur={onInputBlur}
             placeholder="Enter list title"
-            // errors={fieldErrors}
+            errors={fieldErrors}
           />
         </form>
       ) : (

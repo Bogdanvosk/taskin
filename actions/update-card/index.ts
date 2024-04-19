@@ -1,51 +1,43 @@
-// 'use server'
+'use server'
 
-// import { auth } from '@clerk/nextjs'
-// import { revalidatePath } from 'next/cache'
+import { auth } from '@clerk/nextjs'
+import { doc, updateDoc } from 'firebase/firestore'
+import { revalidatePath } from 'next/cache'
 
-// import { createSafeAction } from '@/lib/create-safe-action'
+import { createSafeAction } from '@/lib/create-safe-action'
+import { db } from '@/lib/firebaseConfig'
 
-// // import { db } from '@/lib/db'
-// import { updateCardSchema } from './schema'
-// import type { InputType, ReturnType } from './types'
+import { updateCardSchema } from './schema'
+import type { InputType, ReturnType } from './types'
 
-// const handler = async (data: InputType): Promise<ReturnType> => {
-//   const { userId } = auth()
+const handler = async (data: InputType): Promise<ReturnType> => {
+  const { userId } = auth()
 
-//   if (!userId) {
-//     return {
-//       error: 'Unauthorized'
-//     }
-//   }
+  if (!userId) {
+    return {
+      error: 'Unauthorized'
+    }
+  }
 
-//   const { boardId } = data
+  const { boardId, id, ...values } = data
 
-//   let card
-//   // try {
-//   //   card = await db.card.update({
-//   //     where: {
-//   //       id,
-//   //       list: {
-//   //         board: {
-//   //           userId
-//   //         }
-//   //       }
-//   //     },
-//   //     data: {
-//   //       ...values
-//   //     }
-//   //   })
-//   // } catch (error) {
-//   //   return {
-//   //     error: 'Failed to update card'
-//   //   }
-//   // }
+  try {
+    const cardRef = doc(db, 'cards', id)
 
-//   revalidatePath(`/board/${boardId}`)
+    await updateDoc(cardRef, {
+      ...values
+    })
+  } catch (error) {
+    return {
+      error: 'Failed to update card'
+    }
+  }
 
-//   return {
-//     data: card
-//   }
-// }
+  revalidatePath(`/board/${boardId}`)
 
-// export const updateCard = createSafeAction(updateCardSchema, handler)
+  return {
+    data: id
+  }
+}
+
+export const updateCard = createSafeAction(updateCardSchema, handler)

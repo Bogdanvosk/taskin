@@ -1,15 +1,27 @@
 import { auth } from '@clerk/nextjs'
-// import { NextResponse } from 'next/server'
+import { doc, getDoc } from 'firebase/firestore'
+import { NextResponse } from 'next/server'
 
-// import { db } from '@/lib/db'
+import { db } from '@/lib/firebaseConfig'
 
-export function GET() {
-  // req: Request
-  // { params }: { params: { cardId: string } }
+export async function GET(
+  req: Request,
+  { params }: { params: { cardId: string } }
+) {
   const { userId } = auth()
 
   if (!userId) {
     return new Response(JSON.stringify('Unauthorized'), { status: 401 })
+  }
+
+  try {
+    const cardRef = doc(db, 'cards', params.cardId)
+
+    const card = await getDoc(cardRef)
+
+    return NextResponse.json(card.data())
+  } catch (error) {
+    return new Response(JSON.stringify(error), { status: 500 })
   }
   // try {
   //   const card = await db.card.findUnique({

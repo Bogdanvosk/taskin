@@ -1,51 +1,44 @@
-// 'use server'
+'use server'
 
-// import { auth } from '@clerk/nextjs'
-// import { revalidatePath } from 'next/cache'
+import { auth } from '@clerk/nextjs'
+import { doc, updateDoc } from 'firebase/firestore'
+import { revalidatePath } from 'next/cache'
 
-// import { createSafeAction } from '@/lib/create-safe-action'
+import { createSafeAction } from '@/lib/create-safe-action'
+import { db } from '@/lib/firebaseConfig'
 
-// // import { db } from '@/lib/db'
-// import { updateListSchema } from './schema'
-// import type { InputType, ReturnType } from './types'
+// import { db } from '@/lib/db'
+import { updateListSchema } from './schema'
+import type { InputType, ReturnType } from './types'
 
-// const handler = (data: InputType): Promise<ReturnType> => {
-//   const { userId } = auth()
+const handler = async (data: InputType): Promise<ReturnType> => {
+  const { userId } = auth()
 
-//   if (!userId) {
-//     return {
-//       error: 'Unauthorized'
-//     }
-//   }
+  if (!userId) {
+    return {
+      error: 'Unauthorized'
+    }
+  }
 
-//   const { boardId } = data
+  const { id, title, boardId } = data
 
-//   let list
+  try {
+    const listRef = doc(db, 'lists', id)
 
-//   // try {
-//   //   list = await db.list.update({
-//   //     where: {
-//   //       id,
-//   //       boardId,
-//   //       board: {
-//   //         userId
-//   //       }
-//   //     },
-//   //     data: {
-//   //       title
-//   //     }
-//   //   })
-//   // } catch (error) {
-//   //   return {
-//   //     error: 'Failed to update list'
-//   //   }
-//   // }
+    await updateDoc(listRef, {
+      title
+    })
+  } catch (error) {
+    return {
+      error: 'Failed to update list'
+    }
+  }
 
-//   revalidatePath(`/board/${boardId}`)
+  revalidatePath(`/board/${boardId}`)
 
-//   return {
-//     data: list
-//   }
-// }
+  return {
+    data: id
+  }
+}
 
-// export const updateList = createSafeAction(updateListSchema, handler)
+export const updateList = createSafeAction(updateListSchema, handler)

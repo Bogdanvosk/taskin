@@ -2,17 +2,22 @@
 
 import type { ElementRef } from 'react'
 import { useRef, useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 // import { useQueryClient } from '@tanstack/react-query'
 import { AlignLeft } from 'lucide-react'
+import { useParams } from 'next/navigation'
+import { toast } from 'sonner'
 // import { useParams } from 'next/navigation'
 // import { toast } from 'sonner'
 import { useEventListener, useOnClickOutside } from 'usehooks-ts'
 
+import { updateCard } from '@/actions/update-card'
 // import { updateCard } from '@/actions/update-card'
 import { FormSubmit } from '@/components/form/form-submit'
 import { FormTextarea } from '@/components/form/form-textarea'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useAction } from '@/hooks/use-action'
 // import { useAction } from '@/hooks/use-action'
 import type { CardWithList } from '@/types'
 
@@ -21,25 +26,25 @@ interface DescriptionProps {
 }
 
 export const Description = ({ data }: DescriptionProps) => {
-  // const queryClient = useQueryClient()
-  // const params = useParams()
+  const queryClient = useQueryClient()
+  const params = useParams()
 
   const [isEditing, setIsEditing] = useState(false)
 
   const formRef = useRef<ElementRef<'form'>>(null)
   const textareaRef = useRef<ElementRef<'textarea'>>(null)
 
-  // const { execute, fieldErrors } = useAction(updateCard, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({
-  //       queryKey: ['card', data.id]
-  //     })
-  //     toast.success(`Card ${data.title} updated`)
-  //   },
-  //   onError: (error) => {
-  //     toast.error(error)
-  //   }
-  // })
+  const { execute, fieldErrors } = useAction(updateCard, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['card', data.id]
+      })
+      toast.success(`Card ${data.title} updated`)
+    },
+    onError: (error) => {
+      toast.error(error)
+    }
+  })
 
   const enableEditing = () => {
     setIsEditing(true)
@@ -70,14 +75,14 @@ export const Description = ({ data }: DescriptionProps) => {
   useEventListener('keydown', onKeyDown)
   useOnClickOutside(formRef, disableEditing)
 
-  const onSubmit = () => {
-    // const description = formData.get('description') as string
-    // const boardId = params.boardId as string
-    // execute({
-    //   id: data.id,
-    //   boardId,
-    //   description
-    // })
+  const onSubmit = (formData: FormData) => {
+    const description = formData.get('description') as string
+    const boardId = params.boardId as string
+    execute({
+      id: data.id,
+      boardId,
+      description
+    })
   }
 
   return (
@@ -92,11 +97,11 @@ export const Description = ({ data }: DescriptionProps) => {
             <FormTextarea
               onKeyDown={onTextareaKeydown}
               id="description"
-              className="w-full "
+              className="w-full"
               placeholder="Add description"
               defaultValue={data.description || undefined}
               ref={textareaRef}
-              // errors={fieldErrors}
+              errors={fieldErrors}
             />
             <div className="flex items-center gap-x-2">
               <FormSubmit>Save</FormSubmit>
@@ -114,7 +119,7 @@ export const Description = ({ data }: DescriptionProps) => {
           <div
             onClick={enableEditing}
             role="button"
-            className="min-h-[78px] bg-neutral-200 dark:bg-slate-500/80 rounded-md text-sm font-medium py-3 px-3.5 hover:bg-neutral-300 transition"
+            className="min-h-[78px] bg-neutral-200 dark:bg-slate-500/80 dark:hover:bg-slate-700 rounded-md text-sm font-medium py-3 px-3.5 hover:bg-neutral-300 transition"
           >
             {data.description || 'Add description...'}
           </div>

@@ -2,15 +2,15 @@
 
 import type { ElementRef } from 'react'
 import { useRef, useState } from 'react'
-// import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Layout } from 'lucide-react'
+import { useParams } from 'next/navigation'
+import { toast } from 'sonner'
 
-// import { useParams } from 'next/navigation'
-// import { toast } from 'sonner'
-// import { updateCard } from '@/actions/update-card'
+import { updateCard } from '@/actions/update-card'
 import { FormInput } from '@/components/form/form-input'
 import { Skeleton } from '@/components/ui/skeleton'
-// import { useAction } from '@/hooks/use-action'
+import { useAction } from '@/hooks/use-action'
 import type { CardWithList } from '@/types'
 
 interface HeaderProps {
@@ -18,43 +18,44 @@ interface HeaderProps {
 }
 
 export const Header = ({ data: card }: HeaderProps) => {
-  // const queryClient = useQueryClient()
-  // const params = useParams()
+  const queryClient = useQueryClient()
+  const params = useParams()
 
-  const [title] = useState(card.title)
+  const [title, setTitle] = useState(card.title)
 
   const inputRef = useRef<ElementRef<'input'>>(null)
 
-  // const { execute } = useAction(updateCard, {
-  //   onSuccess: (data) => {
-  //     queryClient.invalidateQueries({
-  //       queryKey: ['card', card.id]
-  //     })
+  const { execute } = useAction(updateCard, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['card', card.id]
+      })
 
-  //     toast.success(`Card renamed to "${data.title}"`)
-  //     setTitle(data.title)
-  //   },
-  //   onError: (error) => {
-  //     toast.error(error)
-  //   }
-  // })
+      toast.success(`Card renamed`)
+    },
+    onError: (error) => {
+      toast.error(error)
+    }
+  })
 
   const onBlur = () => {
     inputRef.current?.form?.requestSubmit()
   }
 
   const onSubmit = (formData: FormData) => {
-    // const id = card.id
+    const id = card.id
     const title = formData.get('title') as string
-    // const boardId = params.boardId as string
+    const boardId = params.boardId as string
 
     if (title === card.title) return
 
-    // execute({
-    //   id,
-    //   title,
-    //   boardId
-    // })
+    execute({
+      id,
+      title,
+      boardId
+    })
+
+    setTitle(title)
   }
 
   return (
