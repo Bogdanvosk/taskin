@@ -73,7 +73,9 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
               'cursor-pointer relative aspect-video group hover:opacity-75 transition bg-[#6C63FF] rounded-sm',
               pending ? 'opacity-50 hover:opacity-50 cursor-auto' : ''
             )}
-            onClick={() => handleSelectImage(image.id)}
+            onClick={() => {
+              handleSelectImage(image.id)
+            }}
           >
             <input
               type="radio"
@@ -101,12 +103,9 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
               <Check className="h-4 w-4 text-white" />
             </div>
             <Link
-              onClick={(e: React.MouseEvent<HTMLAnchorElement>) =>
-                e.stopPropagation()
-              }
               href={image.links.html}
               target="_blank"
-              className="opacity-0 transition group-hover:opacity-100 absolute bottom-0 w-full text-[10px] truncate text-white hover:underline p-1 bg-black/50"
+              className="hidden sm:block opacity-0 transition group-hover:opacity-100 absolute bottom-0 w-full text-[10px] truncate text-white hover:underline p-1 bg-black/50"
             >
               {image.user.name}
             </Link>
