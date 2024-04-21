@@ -45,11 +45,6 @@ export const BoardList = () => {
     setIsShowingFavourites(!isShowingFavourites)
   }
 
-  // const animate = useSpring({
-  //   from: { opacity: 0, y: -20 },
-  //   to: { opacity: 1, y: 0 }
-  // })
-
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between font-semibold text-neutral-700">
@@ -88,9 +83,20 @@ export const BoardList = () => {
           />
         </Button>
       </div>
-      {isBoardsError || isFavouritesError ? <Error /> : null}
+      {isBoardsError || isFavouritesError ? (
+        <Error message="Failed to load boards" />
+      ) : null}
 
       {isBoardsLoading ? <SkeletonBoardList /> : null}
+
+      {favourites?.length === 0 && isShowingFavourites ? (
+        <Error
+          className="flex sm:hidden"
+          message="No favourite boards found"
+          width={250}
+          height={250}
+        />
+      ) : null}
 
       {boards && (
         <motion.div
@@ -105,6 +111,7 @@ export const BoardList = () => {
             : boards.map((board: Board) => (
                 <BoardItem key={board.id} data={board} />
               ))}
+
           <FormPopover side="right" sideOffset={10}>
             <div
               role="button"
