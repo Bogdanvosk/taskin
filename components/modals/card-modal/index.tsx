@@ -10,12 +10,17 @@ import type { CardWithList } from '@/types'
 import { Description } from './description'
 import { Header } from './header'
 
+interface CardModalProps {
+  card: CardWithList
+  list: string
+}
+
 export const CardModal = () => {
   const id = useCardModal((state) => state.id)
   const isOpen = useCardModal((state) => state.isOpen)
   const onClose = useCardModal((state) => state.onClose)
 
-  const { data: cardData } = useQuery<CardWithList>({
+  const { data: cardData } = useQuery<CardModalProps>({
     queryKey: ['card', id],
     queryFn: () => fetcher(`/api/cards/${id}`)
   })
@@ -30,7 +35,7 @@ export const CardModal = () => {
               {!cardData ? (
                 <Description.Skeleton />
               ) : (
-                <Description data={cardData} />
+                <Description data={cardData.card} />
               )}
             </div>
           </div>

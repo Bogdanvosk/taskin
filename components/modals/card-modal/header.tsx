@@ -14,21 +14,26 @@ import { useAction } from '@/hooks/use-action'
 import type { CardWithList } from '@/types'
 
 interface HeaderProps {
-  data: CardWithList
+  data: {
+    card: CardWithList
+    list: string
+  }
 }
 
-export const Header = ({ data: card }: HeaderProps) => {
+export const Header = ({ data }: HeaderProps) => {
   const queryClient = useQueryClient()
   const params = useParams()
 
-  const [title, setTitle] = useState(card.title)
+  // console.log("card", card);
+
+  const [title, setTitle] = useState(data.card.title)
 
   const inputRef = useRef<ElementRef<'input'>>(null)
 
   const { execute } = useAction(updateCard, {
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['card', card.id]
+        queryKey: ['card', data.card.id]
       })
 
       toast.success(`Card renamed`)
@@ -43,11 +48,11 @@ export const Header = ({ data: card }: HeaderProps) => {
   }
 
   const onSubmit = (formData: FormData) => {
-    const id = card.id
+    const id = data.card.id
     const title = formData.get('title') as string
     const boardId = params.boardId as string
 
-    if (title === card.title) return
+    if (title === data.card.title) return
 
     execute({
       id,
@@ -72,8 +77,7 @@ export const Header = ({ data: card }: HeaderProps) => {
           />
         </form>
         <p className="text-sm text-muted-foreground dark:text-white">
-          in list{' '}
-          <span className="underline">{card.list && card.list.title}</span>
+          in list <span className="underline">{data.list}</span>
         </p>
       </div>
     </div>

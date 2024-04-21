@@ -19,7 +19,16 @@ export async function GET(
 
     const card = await getDoc(cardRef)
 
-    return NextResponse.json(card.data())
+    const listRef = doc(db, 'lists', card.data()?.listId)
+
+    const list = await getDoc(listRef)
+
+    const obj = {
+      card: card.data(),
+      list: list.data()?.title
+    }
+
+    return NextResponse.json(obj)
   } catch (error) {
     return new Response(JSON.stringify(error), { status: 500 })
   }
