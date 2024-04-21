@@ -77,7 +77,11 @@ export const Header = ({ data }: HeaderProps) => {
           />
         </form>
         <p className="text-sm text-muted-foreground dark:text-white">
-          in list <span className="underline">{data.list}</span>
+          in list{' '}
+          <span className="relative">
+            <span className="absolute left-0 -bottom-[2px] h-[1px] w-full text-muted-foreground dark:bg-white"></span>
+            {data.list}
+          </span>
         </p>
       </div>
     </div>
