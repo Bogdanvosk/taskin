@@ -86,7 +86,7 @@ export const Description = ({ data }: DescriptionProps) => {
       <AlignLeft className="h-5 w-5 mt-0.5 text-neutral-700 dark:text-white" />
       <div className="w-full">
         <p className="font-semibold text-neutral-700 mb-2 dark:text-white">
-          Description
+          Описание
         </p>
         {isEditing ? (
           <form action={onSubmit} ref={formRef} className="space-y-2">
@@ -94,20 +94,20 @@ export const Description = ({ data }: DescriptionProps) => {
               onKeyDown={onTextareaKeydown}
               id="description"
               className="w-full "
-              placeholder="Add description"
+              placeholder="Введите описание"
               defaultValue={data.description || undefined}
               ref={textareaRef}
               errors={fieldErrors}
             />
             <div className="flex items-center gap-x-2">
-              <FormSubmit>Save</FormSubmit>
+              <FormSubmit>Сохранить</FormSubmit>
               <Button
                 type="button"
                 variant="ghost"
                 onClick={disableEditing}
                 size="sm"
               >
-                Cancel
+                Отменить
               </Button>
             </div>
           </form>
@@ -117,7 +117,7 @@ export const Description = ({ data }: DescriptionProps) => {
             role="button"
             className="min-h-[78px] bg-neutral-200 dark:bg-slate-500/80 rounded-md text-sm font-medium py-3 px-3.5 hover:bg-neutral-300 transition"
           >
-            {data.description || 'Add description...'}
+            {data.description || 'Введите описание...'}
           </div>
         )}
       </div>

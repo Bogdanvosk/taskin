@@ -71,7 +71,7 @@ export const Header = ({ data: card }: HeaderProps) => {
           />
         </form>
         <p className="text-sm text-muted-foreground dark:text-white">
-          in list{' '}
+          в списке{' '}
           <span className="relative">
             <span className="absolute left-0 -bottom-[2px] h-[1px] w-full bg-muted-foreground dark:bg-white"></span>
             {card.list && card.list.title}

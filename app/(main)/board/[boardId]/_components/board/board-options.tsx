@@ -52,7 +52,7 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
         </PopoverTrigger>
         <PopoverContent className="px-0 py-3" side="bottom" align="start">
           <div className="text-sm font-medium text-center text-neutral-600 dark:text-white pb-4">
-            Board actions
+            Действия с доской
           </div>
           <PopoverClose asChild>
             <Button
@@ -68,7 +68,7 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
             variant="ghost"
             onClick={onCopyBoard}
           >
-            Copy board
+            Копировать доску
           </Button>
           <Button
             disabled={isLoading}
@@ -76,7 +76,7 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
             variant="ghost"
             onClick={onDeleteBoard}
           >
-            Delete this board
+            Удалить доску
           </Button>
         </PopoverContent>
       </Popover>

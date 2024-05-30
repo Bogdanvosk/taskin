@@ -10,6 +10,7 @@
     "format": "prettier --write **/*.{ts,tsx,js,jsx}"
   },
   "dependencies": {
+    "@clerk/localizations": "^2.4.3",
     "@clerk/nextjs": "^4.29.7",
     "@clerk/themes": "^1.7.12",
     "@hello-pangea/dnd": "^16.6.0",

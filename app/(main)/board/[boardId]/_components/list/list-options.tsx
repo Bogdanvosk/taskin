@@ -76,7 +76,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
       </PopoverTrigger>
       <PopoverContent className="px-0 py-3" side="bottom">
         <div className="text-sm font-medium text-center text-neutral-600 pb-4 dark:text-white">
-          List actions
+          Действия со списком
         </div>
         <PopoverClose ref={closeButtonRef} asChild>
           <Button
@@ -91,7 +91,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm "
           variant="ghost"
         >
-          Add card
+          Добавить задачу
         </Button>
         <form action={onCopyList}>
           <input readOnly hidden name="id" id="id" value={data.id} />
@@ -106,7 +106,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
             variant="ghost"
             className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm "
           >
-            Copy list
+            Копировать список
           </FormSubmit>
         </form>
         <Separator />
@@ -123,7 +123,7 @@ export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
             variant="ghost"
             className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm "
           >
-            Delete list
+            Удалить список
           </FormSubmit>
         </form>
       </PopoverContent>

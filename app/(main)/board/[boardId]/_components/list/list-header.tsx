@@ -99,7 +99,7 @@ export const ListHeader = ({
             ref={inputRef}
             defaultValue={title}
             onBlur={onInputBlur}
-            placeholder="Enter list title"
+            placeholder="Введите имя списка"
             errors={fieldErrors}
           />
         </form>

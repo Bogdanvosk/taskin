@@ -81,19 +81,19 @@ export const CardForm = forwardRef<HTMLInputElement, CardFormProps>(
             <FormInput
               id="title"
               ref={ref}
-              placeholder="Enter card title"
+              placeholder="Введите имя задачи"
               errors={fieldErrors}
             />
             <FormTextarea
               id="description"
               onKeyDown={onTextareaKeydown}
-              placeholder="Enter card description"
+              placeholder="Введите описание задачи"
               errors={fieldErrors}
             />
             <input readOnly hidden id="listId" value={listId} name="listId" />
           </div>
           <div className="flex items-center gap-x-1 px-1">
-            <FormSubmit>Add card</FormSubmit>
+            <FormSubmit>Добавить задачу</FormSubmit>
             <Button onClick={disableEditing} size="sm" variant="ghost">
               <X className="h-5 w-5" />
             </Button>
@@ -110,7 +110,7 @@ export const CardForm = forwardRef<HTMLInputElement, CardFormProps>(
           className="h-auto px-2 py-1.5 w-full justify-start text-muted-foreground text-sm "
         >
           <Plus className="h-4 w-4 mr-2" />
-          Add a card
+          Создать задачу
         </Button>
       </div>
     )

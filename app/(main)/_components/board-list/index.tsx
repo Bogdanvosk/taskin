@@ -51,7 +51,7 @@ export const BoardList = () => {
         <div className="flex items-center">
           <User2 className="h-6 w-6 mr-2 dark:stroke-white" />
           <div className="relative text-[16px] xs:text-lg dark:text-white">
-            Your boards
+            Ваши доски
           </div>
         </div>
         <Button
@@ -67,7 +67,7 @@ export const BoardList = () => {
               'relative text-[16px] xs:text-lg text-black transition dark:text-white'
             )}
           >
-            Favourite boards
+            Избранные доски
             <span
               className={cn(
                 'absolute w-full opacity-0 h-[2px] bg-black dark:bg-white left-0 bottom-0 transition',
@@ -118,7 +118,7 @@ export const BoardList = () => {
               className="hidden sm:flex aspect-video relative h-full w-full bg-muted rounded-sm flex-col gap-y-1 items-center justify-center hover:bg-muted/75 transition shadow-sm dark:bg-slate-800 dark:hover:bg-slate-800/75"
             >
               <p className="font-semibold dark:text-white">
-                Create a new board
+                Создать новую доску
               </p>
             </div>
           </FormPopover>
