@@ -104,13 +104,18 @@ export const BoardList = () => {
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
         >
-          {favourites && isShowingFavourites
+          {/* {favourites && isShowingFavourites
             ? favourites.map((board: Board) => (
                 <BoardItem key={board.id} data={board} />
               ))
             : boards.map((board: Board) => (
                 <BoardItem key={board.id} data={board} />
-              ))}
+              ))} */}
+
+          {boards.length > 0 &&
+            boards.map((board: Board) => (
+              <BoardItem key={board.id} data={board} />
+            ))}
 
           <FormPopover side="right" sideOffset={10}>
             <div
